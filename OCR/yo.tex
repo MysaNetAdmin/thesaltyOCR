@@ -1,0 +1,299 @@
+\documentclass[14pt]{article}
+\usepackage[14pt]{extsizes}
+\usepackage{setspace}
+\onehalfspace
+\setlength{\parindent}{4em}
+\setlength{\headheight}{14.5pt}
+\setlength{\voffset}{1pt}
+\addtolength{\skip\footins}{30pt}
+\usepackage{color}
+\usepackage{amssymb,amsmath}
+\usepackage{relsize}
+\usepackage{ulem}
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{eurosym}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{colortbl}
+\usepackage{fancyhdr}
+\usepackage{todonotes}
+
+
+\pagestyle{fancy}
+\begin{document}
+\begin{center}
+\huge Les Eleveurs d'Autruche 
+\newline
+\LARGE pr\'esentent:
+\\
+\huge Ostrich Completely Ridiculous
+\huge Rapport de 2\`eme soutenance
+\newline
+\newline
+\newline
+\includegraphics[width=12cm]{images/autruche.jpg}
+\renewcommand{\footrulewidth}{1pt}
+\fancyfoot[R]{EPITA 2020}
+\fancyfoot[L]{\includegraphics[width=1.8cm]{images/1.jpg}}\begin{description}
+\large
+\item[Auteurs : ] cordei\_a, descam\_m, fontvi\_q, lemair\_i
+\end{description}
+\large 
+\textit{Décembre 2016}
+\end{center}
+
+\newpage
+\tableofcontents{}
+
+\newpage
+\section{Le projet}
+Pour notre 3 ème semestre à EPITA il nous a été demandé cette année de travailler sur un OCR dans le langage de programmation C. OCR (Optical Character Recognition/Reader) est la conversion mécanique ou électronique d'une image avec du texte tapé ou écrit à la main, que ce soit sur un document scanné, une photo d'un document ou une photo d'une scène (comme par exemple d'un panneau).
+\\
+Il y a plusieurs raisons pour lesquelles il est très intéressant de travailler sur un OCR. Tout d'abord, nous travaillons pour la première fois de notre cursus sur du machine learning, aussi appelé apprentissage machine. Ce dernier est un secteur de plus en plus demandé par les entreprises (GOOGLE, FACEBOOK, AMAZON pour ne citer qu'eux). De plus, le machine learning change énormément de ce que nous avions l'habitude de faire en première année. Cela demande beaucoup plus de connaissances mathématiques et une logique bien différente de ce que nous étions habitués à avoir.
+\\
+C'est aussi la première fois que nous faisons un projet en C. Nous avions étudié l'Ocaml et le C\# en première année, mais cette année est l'année prochaine nous coderons en C. Le C est l'un des langages les plus répandus dans le monde de la programmation et il est important de savoir l'utiliser.
+\newpage
+\section{Le groupe}
+La formation du groupe a été spontanée, bien qu'aucun de nous ne connaisse vraiment les autres auparavant.
+\newline
+\indent Nous avons eu un bon premier contact lors des premiers jours de cours au sein de la même classe. Après de longues discussions, nous avons décidé d'un commun accord de travailler ensemble pour ce projet de S3. Nous avons également choisi de nommer Quentin chef de groupe, car, étant redoublant, celui-ci possède déjà une certaine expérience vis-à-vis de ce projet, et des projets de manière générale. 
+\newline
+\indent Les noms de groupe et de projet sont, comme on peut le remarquer, liés. L'idée était de faire un jeu de mot avec l'acronyme OCR, une fois le nom de projet trouvé, le nom de groupe a été longuement débattu, mais n'ayant pas de meilleure idée que celle de Ferdinand, nous avons gardé ce nom de groupe.  
+\newline
+\newline
+\indent Cette composition, qui peut paraître un peu bancale aux premiers abords, fonctionne quand même plutôt bien. Nous avons une bonne cohésion de groupe, et l'ambiance est agréable lors des séances de travail.
+\newline
+\newline
+\indent Le sujet pour sa part, bien qu'étant imposé, nous a tout de même motivé, car la découverte du système d'apprentissage est un sujet qu'aucun de nous ne connaissait vraiment. 
+\newpage
+\section{Les membres}
+\subsection{Quentin Fontvielle}
+Quand j'ai appris que pour le S3 nous allions faire un OCR, j'ai été très emballé. En effet, on ne peut pas dire que je sois très bon en programmation, et mon projet du S3 dernier s'étant mal passé, ce projet est pour moi une nouvelle chance de prouver mes capacités et de m'améliorer en programmation. Je ne connais pas beaucoup les autres membres puisque le groupe a été créé après une semaine de cours seulement, mais ils ont l'air sérieux et motivés, et je pense que ce projet se déroulera bien. 
+\newpage
+\subsection{Dylan Cordeiro}
+La conception d'un OCR représente un challenge de taille pour moi, n'étant pas très à l'aise avec le langage C. Ce projet sera très formateur et j'espère bien en tirer un maximum d'expérience. Ce projet me permettra d'améliorer mes capacités en programmation et mes connaissances du langage C. J'ai la chance d'avoir intégré un groupe où je connaissais la plupart des membres, je connaissais déjà Ferdinand et Marion depuis la sup, il n'y a que Quentin que j'ai rencontré cette année et qui me semble être un bon élément. Notre groupe a une assez bonne cohésion et une très bonne ambiance lors de nos sessions de travail. Je suis plutôt satisfait de notre travail en tant que groupe et du sujet de projet de cette année.
+\newpage
+\subsection{Marion Descamps}
+Bien que n'ayant pas de problèmes en programmation,le concept d'OCR représentait pour moi une autre difficulté : la dimension mathématique. C'est pourquoi je me suis occupée de la partie du traitement de l'image avec Ferdinand jusqu'à la première soutenance.
+Cette partie ne nous a pas posé de réelle difficulté, mais l'absence de documentation nous a poussée à réfléchir et à trouver des solutions par nous même.
+Pour la deuxième soutenance, compte tenu des difficultés rencontrées avec l'implémentation du réseau de neurones, il a été décidé que j'aiderai Dylan à implémenter le réseau, l'apprentissage, et les autres fonctions qui vont avec.\\
+Cela était loin d'être facile, il a fallu que je rattrape mon retard au niveau de la compréhension du réseau, et qu'on rattrape le retard que l'on avait pris.\\
+Nous avons néanmoins réussi à implémenter le réseau, et, si ce n'est pour l'apprentissage que nous n'avons pas eu le temps d'effectuer, nous avons un OCR (presque) fonctionnel.\\
+
+\newpage
+\subsection{Ferdinand Lemaire}
+Avant de connaitre notre sujet de projet du S3, je savais ce qu'était un OCR mais je n'en connaissais pas le fonctionnement. Aprés avoir fait quelques recherches, je me suis vite rendu compte que cela allait représenter un véritable challenge pour notre groupe. Ce projet est pour moi l'occasion d'en apprendre plus sur les bases du langage C, et d'améliorer mes capacités en programmation. J'ai rencontré les autres membres un peu au hasard, je connaissais déjà plus ou moins Dylan et Quentin et je savais que Marion partait dans le même pays que moi lors du semestre à l'étranger. Ils pensaient que je ne travaillerai pas beaucoup, mon but est de leur prouver le contraire.
+Dans le cadre de ce projet, je me suis occupé de tout ce qui concerne l'image. Cela va du pré-traitement jusqu'au découpage de caractères, et la conversion sous forme de matrices, afin qu'elles puissent être directement rentrées dans l'OCR.
+\newpage
+\section{Bilan de la première soutenance}
+\indent
+Lors de la première soutenance, nous avions déja beaucoup travaillé sur le traitement d'image. Notre segmentation était fonctionnelle, bien que nous n'avions encore pas trouvé de solution pour stocker et convertir les caractères. Au niveau du réseau de neurones, nous étions en retard. En effet, notre XOR n'était pas fonctionnel, et la gestion du réseau était très bancale. 
+\newline
+\newline
+Pour cette soutenance, notre leitmotiv était simple : Rattraper le retard et finir dans les temps. Au niveau de la segmentation, nous avons renforcés nos algorithmes, en corrigeant de très nombreux bugs qui entravaient l'efficacité du découpage sur des images complexes. Nous avons également travaillé sur le stockage et la conversion des caractères afin de les envoyer directement dans le réseau de neurones. Enfin, nous avons également ajoutés quelques algorithmes de pré-traitement. Au niveau du réseau de neurones, nous avons décidé de repartir de zéro, ce qui a grandement compliqué notre tâche, cependant nous avons ainsi mieux compris comment nous devions appréhender ce système qui était totalement nouveau pour nous. 
+\newpage
+\section{Traitement d'image}
+Avant de pouvoir reconnaître le texte, il faut d'abord le modifier et le découper. Il y a plusieurs étapes:
+\newline
+\indent - Passage de l'image en niveaux de gris, puis en noir et blanc
+\newline
+\indent - Pré-traitement, réduction du bruit
+\newline
+\indent - le découpage en blocs de caractères (paragraphes)
+\newline
+\indent - le découpage des différentes lignes
+\newline
+\indent - le découpage des caractères au sein d'une ligne
+\newline
+\indent - le stockage des sous-images, et la conversion en matrices
+\subsection{Passage de l'image en noir et blanc}
+Avant de pouvoir travailler sur l'image, on la transforme en noir et blanc. Pourquoi ? Car ainsi, on peut categoriser chaque pixel avec un 1 pour blanc et un 0 pour noir. Cela facilite toutes les op\'erations suivantes. Pour la passer en noir et blanc, on commence par la passer en niveau de gris, puis on détermine un seuil à partir duquel le pixel doit être considéré comme "noir" ou comme "blanc".
+\newpage
+\noindent
+\includegraphics[width = 7 cm]{images/Maid.jpg}
+\includegraphics[width = 7.1 cm]{images/Maiden.png}
+
+
+\textit{Exemple de passage d'une image de la couleur vers le noir et blanc}
+\indent
+\subsection{Pré-traitement et réduction du bruit}
+Une fois que nous l'image passée en noir et blanc, celle-ci perd en lisibilité. Ainsi, si la qualité de base n'était pas bonne, celle-ci ne sera pas reconnue par l'OCR, ou bien elle sera mal reconnue. Pour remédier à ce problème, nous corrigeons les problèmes en appliquant une matrice de convolution à l'image. \indent 
+\newpage
+
+\subsection{Détection des blocs de textes}
+Pour détecter un bloc de caractères, on parcours l'image de haut en bas. Dès qu'un bloc est trouvé, on parcours la zone entre le haut et le bas du bloc afin de trouver ses bordures verticales. On peut ensuite les encadrer et passer au bloc suivant. Au niveau visuel, on trace des lignes bleues autour de chaque bloc afin de bien les représenter sur l'image.
+\newline
+\newline
+\noindent
+\includegraphics[width = 8 cm]{images/Autruche.png}
+\includegraphics[width = 8 cm]{images/Autr.png}
+
+\textit{Détection des blocs de caractères sur une image quelconque}
+\indent 
+\newpage
+\subsection{Détection des lignes}
+Une fois le bloc de texte trouvé, on doit en sortir les lignes. Pour ce faire, on parcourt le bloc dans la verticalité, une fois qu'une ligne qui n'est pas totalement blanche est trouvée, on note ses coordonnées. On continue le parcours jusqu'à la prochaine ligne de pixel blancs (synonyme de fin de la ligne de caractères). On peut ainsi séparer la ligne et continuer sur les lignes suivantes.
+\indent
+\subsection{Détection de caractères}
+Pour détecter les caractères, on utilise une technique similaire de celle utilisée pour les lignes. On parcours les colonnes dans chaque ligne. Une fois que l'on trouve une colonne avec au moins un pixel noir, on note ses coordonnées et on continue de parcourir le caractère jusqu'à ce que l'on trouve l'endroit où il se termine. On peut ainsi récupérer le caractère et continuer sur le caractère suivant. De la même manière que les blocs sont repérés à l'aide de lignes bleues, les lignes et les caractères sont découpés grâce à des lignes rouges (ainsi, on ne confond pas un bloc avec un caractère). De plus cela rend notre méthode plus explicite visuellement parlant. 
+\newline
+\newpage
+\noindent
+\includegraphics[width = 15 cm]{images/LignesCar.png}
+
+
+
+\textit{Détection des lignes et des caractères sur un Lorem Ipsum}
+\newpage
+\indent
+\subsection{Stockage des sous-images}
+Une fois que l'image a été découpée, nous devons en extraire les caractères, afin de les envoyer directement dans l'OCR. Pour se faire, on effectue un parcours de l'image et on note les coordonnées de chaque caractère dans une struct dédiée. On note également les espaces, et les retours à la ligne, afin de faciliter la retranscription du texte. 
+
+\indent
+\subsection{Conversion}
+C'est bon, l'image est découpée, et les caractères sont créés. Cependant, on ne peut pas envoyer les images tel quel. Nous devons donc les transformer. Dans notre projet, nous avons choisi de faire de ces images que sont les caractères, des matrices. Pour chaque caractère, on crée donc une matrice. Tous les pixels blancs sont représentés par des [0] et tous les pixels noirs par des [1]. Enfin, le dernier problème que nous rencontrons est un problème "de taille". 
+En effet, l'OCR prend en paramètre des images qui sont toutes de la même taille. Nous avons donc utilisés un algorithme de redimensionnement des matrices que nous avons récupérés précédemment que nous appliquons sur la liste des matrices. 
+Une fois toutes ces opérations effectuées, l'image est prête à être passée dans l'OCR décrit ci-dessous.
+\newpage
+\indent
+\section{Le réseau de neurones}
+\subsection{Initialisation}
+Pour la première soutenance, nous avions implémenté un réseau qui fonctionnait avec deux "Structs" :\\
+Une Struct "layer" qui est composée de:\\
+-Un entier correspondant au nombre d'entrées de la couche actuelle.\\
+-Un tableau(de double) où l'on va stocker les entrées de la couche actuelle.\\
+-Un entier correspondant au nombre de neurones de la couche actuelle.\\
+-Un tableau(de double) où l'on va stocker les biais de chaque neurones de la couche actuelle.\\
+-Un tableau(de double) où l'on va stocker les poids de chaque entrées pour chaque neurones de la couche actuelle.\\
+-Et enfin, un tableau(de double) où l'on va stocker les valeurs de sortie de chaque neurone de la couche actuelle.\\
+\\
+\newpage
+Ainsi qu'une Struct "network" qui est composée de :\\
+-un entier correspondant au nombre de couches composant le réseau.\\
+-un tableau(de layer) où l'on va stocker les différentes couches de notre réseau.\\
+\\
+Néanmoins, nous avons rencontré des problèmes avec ce réseau, et nous avons préféré recommencer une partie de ce que nous avions déjà fait. Nous nous retrouvons donc aujourd'hui avec une seule structure, qui comporte toutes les informations nécessaires :\\
+- Le nombre de neurones pour chaque couche;\\
+\newline
+- Les 3 listes avec les neurones des couches d'entrée, cachée, et de sortie;\\
+\newline
+- Les tableaux des poids;\\
+\newline
+- Les tableaux des biais.\\
+\newline
+Le fait de tout mettre dans une seule structure nous a grandement facilité la tâche par la suite.\\
+\newline
+\includegraphics[width = 8 cm]{images/1.png}
+\newpage
+\subsection{Le Feedforward}
+Le but du FeedForward est d'obtenir la valeur de sortie d'un réseau de neurones à partir de calculs.\\
+Cette fonction prend en paramètre un réseau de neurone(une struct network) ainsi qu'un tableau d'entrées(tableau de double).\\
+Cette fonction va générer les tableaux de sortie de chaque couche, pour cela elle va calculer pour chaque neurone la somme des entrées du neurone multipliée par leurs poids respectif et ajouter à cette somme le biais de ce neurone, une fois ce calcul effectué on va utiliser ce résultat dans une fonction appelée sigmoïde, qui va utiliser ce résultat dans la formule suivante:\\
+\begin{eqnarray} 
+  \sigma(z) \equiv \frac{1}{1+e^{-résultat}}.
+\end{eqnarray}
+\\
+
+\newpage
+Ce résultat sera la valeur de sortie du neurone actuel et sera ajouté au tableau de sorties de sa couche du neurone. Une fois le tableau de sorties complété, on l'utilise comme tableau d'entrée de la couche suivante et ce jusqu'à la dernière couche où la sortie finale sera le résultat de notre réseau de neurones pour les entrées données en paramètre.\\
+Le résultat de notre réseau de neurones dépend donc des valeurs des entrées, de la valeur des biais des neurones et des poids associés aux entrées. Si nous souhaitons que notre réseau renvoie un résultat en particulier pour des entrées données il faut modifier la valeur des biais et des poids pour trouver la valeur idéale. Or, cette opération n'étant pas réalisable de tête, c'est la qu'entre en jeu l'apprentissage du réseau de neurones.
+\newpage
+\subsection{L'apprentissage}
+Le but de l'apprentissage est de trouver une approximation des valeurs pour le poids et le biais permettant à la sortie finale d'être la même que la sortie attendue dans la majorité des cas.\\
+Pour cela on utilise de nombreuses données contenant des entrées et la sortie attendue, et pour chaque donnée on modifie la valeur des poids et des biais du réseau d'une certaine valeur. 
+\newline
+L'apprentissage permet de trouver les bon poids pour chaque neurone afin de répondre a la demande. Par exemple pour le "OU exclusif", l'apprentissage va prendre un certain nombre de données, ici 100 000 tableaux composes de 2 éléments, nos 2 valeurs d'entrées. Après l'apprentissage, le réseau de neurones sera donc capable de faire les tests pour tous les cas du Xor et d'avoir le bon résultat. 
+La valeur de sortie étant un double, elle sera inférieure a 1. Nous considérons que si la valeur de sortie est supérieur a 0,90 alors elle est vraie, si elle est inférieure à 0,1, elle est fausse, et si elle est comprise entre ces deux valeurs, alors cela signifie que le réseau n'est pas assez bien entraîné.
+\newline
+Une fois que l'apprentissage a été fait, il est possible de sauvegarder les poids des neurones. Pourquoi sauvegarder les poids? Tout simplement parce que l'apprentissage est un processus qui peut être très long. En effet, pour le cas du " ou exclusif" l'apprentissage ne prend que quelques secondes, en revanche pour la reconnaissance de caractères, l'apprentissage sera bien plus long et en règle générale plus le réseau est complexe, plus les données que nous donnerons au réseau de neurones sont importantes, plus la durée de l'apprentissage sera longue.
+\newpage
+
+Nous comprenons donc très vite le besoin de sauvegarder les poids lors de l'apprentissage. Il est évident qu'il est intéressant de sauvegarder ces poids uniquement si les résultats sont les bons. Une manière de sauvegarder les poids est tout simplement de les récupérer et de les mettre dans un tableau. Avant chaque test, les poids seront mis à jour avec les poids correspondants à la tâche. 
+\newpage
+\subsection{La sauvegarde et la charge des poids}
+Les fonctions de sauvegarde et de chargement des poids est donc indispensable, mais cependant très facile à réaliser.\\
+Il suffit en effet de créer un fichier, et, connaissant le nombre de neurones de chaque couche, d'écrire dans le fichier la valeur du poids de ce neurone.\\
+La lecture se fait de façon inverse : dans un premier temps, on lit la taille des différentes couches du réseau à recréer dans le fichier (dans notre cas, la première ligne contient 3 valeurs : le nombre de neurones sur la couche d'entrées, le nombre de neurones sur la couche cachée, et le nombre de neurones sur la couche de sortie). À partir de ces information, on peut initialiser un réseau vierge à l'aide des fonctions d'implémentation du réseau, puis, en lisant ligne à ligne les différentes valeurs des poids, on remplace des poids mis dans le réseau nouvellement créé par les poids qui étaient dans le fichier.\\
+Mais les poids ne sont pas les seules données à devoir être sauvegardées : les biais aussi sont très importants. Le nombre de biais dépendant aussi du nombre de neurones, il suffit de les ajouter à la fin du même fichier que pour les poids.\\
+\newpage
+\subsection{Le XOR}
+Après l'implémentation de toutes les fonctions essentielles présentées précédemment, il est assez simple d'implémenter un XOR.\\
+L'implémentation du réseau est triviale, et est réalisée en une fonction. L'apprentissage, en revanche, est plus compliqué à mettre en place. En effet, afin de rendre l'apprentissage efficace, il est impératif d'apprendre les différents cas dans un ordre pseudo aléatoire, ou en tout cas, de ne pas apprendre chaque cas une seule et unique fois à la suite.\\
+Si par exemple on souhaite apprendre n fois un cas, il faut alors faire une boucle de 4n tours, où à chaque tour, on apprend un cas différent.\\
+Il nous faut donc, afin d'apprendre correctement et d'avoir un réseau de neurones fonctionnel, un autre programme, qui lui s'occupera de créer des cas aléatoirement.\\
+Ce programme n'est pas difficile à réaliser pour le XOR, car il ne comporte que 4 cas, mais, comme nous allons le voir dans la partie suivante, ce n'est pas la même histoire pour un réseau devant reconnaître des caractères.\\
+\newpage
+\subsection{La reconnaissance de caractères}
+Comme mentionné précédemment, la reconnaissance de caractère n'était pas tâche facile. Bien que les fonctions implémentées pour initialiser le réseau soient bonnes, et que le fait qu'on augmente le nombre de neurones pour avoir un réseau reconnaissant des caractères ne pose aucun problème, nous n'avons pas de réseau qui reconnaît les caractères à cause de l'apprentissage.\\
+Les fonctions d'apprentissage sont correctes, mais nous n'avons pas eu le temps d'implémenter une fonction qui, à partir d'une banque de caractères, apprend correctement ces caractères.\\
+Le seul apprentissage que nous avons pu faire à été très rapide, et absolument pas aléatoire, ce qui fait que notre réseau de neurones, avec les poids qu'il a actuellement, n'est pas capable de reconnaître les caractères.
+\newpage
+\section{L'interface graphique} 
+\subsection{Pr\'esentation de Glade}
+Glade est un outil RAD qui permet un développement rapide et facile de l'interface utilisateur pour GTK+ (la bibliothèque que nous avons choisi d'utiliser pour ce projet) et pour l'environnement GNOME. 
+Le design de l'interface utilisateur dans Glade est sauvegarder en XML, et en utilisant l'objet GTKBuilder GTK+ ils peuvent être changé dynamiquement selon le besoin.
+L'utilisation de GtkBuilder et Glade est parfaite pour de nombreux langages de programmation comme C++, C, C\#, Vala, Java, Perl etc. 
+Bien évidemment nous avons utilise le langage C pour tout ce projet.
+\newpage
+\subsection{Notre interface}
+Notre interface ressemble a cela: 
+\begin{center}
+\includegraphics[width=16cm]{glade0.png}
+
+C'est une interface assez minimaliste mais les éléments les plus important sont présents
+\end{center}
+\newpage
+\begin{center}
+\includegraphics[width=16cm]{glade0-1.png}
+Ci-dessus est presente l'interface pour choisir un fichier
+\end{center}
+
+\newpage
+\begin{center}
+\includegraphics[width=16cm]{glade1.png}
+Ci-dessus on retrouve le fichier choisi precedement sur lequel nous pouvons appliquer nos algorithmes d'OCR. Sur la droite s'affichera le resultat.
+\end{center}
+\newpage
+
+\begin{center}
+\includegraphics[width=16cm]{glade2.png}
+Ci-dessus vous pouvez le resultat de notre travail. Comme vous pouvez le voir, ca ne fonctionne absolument pas. 
+\end{center}
+
+\newpage
+\section{Et ensuite ?}
+Bien que le projet de ce semestre soit terminé, notre OCR n'est pourtant pas totalement fonctionnel. Il nous manque en effet un apprentissage à effectuer, ce qui, bien que n'étant pas la partie la plus dure, est sûrement l'étape la plus primordiale lorsqu'on souhaite faire un logiciel de reconnaissance de caractères.\\
+\indent Il sera donc possible dans un premier temps de compléter ce programme.\\
+Par la suite, si tous les membres du groupe sont toujours intéressés par ce projet, il serait possibles d'implémenter différents outils qui permettent une meilleure qualité de lecture, de réduire les risques d'erreur, mais surtout beaucoup d'outils, au niveau du traitement d'image, qui permettent de retrouver du texte dans des documents pour complexes, notamment les documents comportant des images, ou ayant plusieurs colonnes de texte, ou encore des images pas droites.
+\newpage
+\section{Conclusion}
+Ce projet à apporté à tous les membres de ce groupes de nombreuses connaissances qui ne se développent que lors de tels projets.\\
+\indent Bien que le traitement d'images se retrouve dans de nombreux projets, il est toujours intéressant d'apprendre par soi-même, et de retracer le raisonnement logique qui amène à ces algorithmes tant utilisés.\\
+Il en va de même avec le réseau de neurones, si certains d'entre nous se dirigent plus tard vers la recherche, ce réseau n'est alors que le premier d'une longue série, et si aujourd'hui, on ne peut que comprendre la difficulté d'une telle structure, et s'aider d'autant de documentation que possible, ce ne sera peut être pas le cas plus tard, et cette première expérience nous sera alors utile.
+\newpage
+\section{Remerciements}
+Nous tenons a remercier chaudement, Victoria GUEHENNEC ainsi que Clement FANG et encore plus chaudement Guillaume DORE pour toute l'aide qu'ils nous ont apporte tout le long du projet.
+\newpage
+\section{Bibliographie}
+\ \newline
+https://glade.gnome.org/ \newline
+\\
+http://neuralnetworksanddeeplearning.com/ \newline
+\\
+https://wiki-prog.infoprepa.epita.fr/ \newline
+\\/
+https://github.com/BobbyAnguelov/NeuralNetwork/tree/master/Neural\%20Network
+\newpage
+\begin{center}
+
+\  \newline
+\newline
+\newline
+\newline
+\newline
+\Huge BONNES VACANCES
+\end{center}
+\end{document}
