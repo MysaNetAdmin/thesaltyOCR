@@ -10,8 +10,8 @@ void wait_for_keypressed(void){
     SDL_PollEvent( &event );
     switch (event.type){
 
-    case SDL_KEYDOWN: return;
-    default: break;
+      case SDL_KEYDOWN: return;
+      default: break;
     }
 
   }
@@ -39,7 +39,7 @@ SDL_Surface* display_image(SDL_Surface *img) {
   screen = SDL_SetVideoMode(img->w, img->h, 0, SDL_SWSURFACE|SDL_ANYFORMAT);
   if(screen == NULL) {
     errx(1, "Couldn't  set %dx%d video mode: %s\n",
-      img->w, img->h, SDL_GetError());
+        img->w, img->h, SDL_GetError());
   }
 
   if(SDL_BlitSurface(img, NULL, screen, NULL) < 0)
@@ -49,6 +49,49 @@ SDL_Surface* display_image(SDL_Surface *img) {
   wait_for_keypressed();
 
   return screen;
+}
+
+SDL_Surface* init_img(SDL_Surface *img){
+  SDL_Surface* res = SDL_CreateRGBSurface(0,img->w,img->h,32,255,255,255,255);
+  SDL_FreeSurface(res);
+  return res;
+}
+
+SDL_Surface* horizon(SDL_Surface *img, size_t n){
+  
+  SDL_Surface *res = img;
+  int tmp;
+  size_t width = img->w;
+  size_t height = img->h;
+  size_t cpt;
+  int boole;
+  for(size_t i = 0; i < height; ++i){
+    cpt = 0;
+    tmp = 0;
+    boole = 0;
+    for(size_t j = 0; j < width; ++j){
+
+      Uint32 pix = getpixel(img,i,j);
+      if(pix == 16777215 && boole){
+        cpt++;
+      }
+      else if(pix == 0){
+        if(cpt <= n && boole){
+          size_t k = tmp;
+          while(j + cpt < width && k <= j + cpt)
+          {
+            putpixel(res,i,k,0);
+            k++;
+          }
+          tmp = 0;
+        }
+
+        tmp = j;
+        boole = 1;
+      }
+    }
+  }
+  return res;
 }
 
 int main(){
@@ -61,7 +104,7 @@ int main(){
   SDL_FreeSurface(displayed);
   for(size_t i = 0; i < width; ++i){
     for(size_t j = 0; j < height; ++j){
-      
+
       Uint32 pix = getpixel(s,i,j);
       Uint8 r,g,b;
       SDL_GetRGB(pix,s->format, &r, &g, &b);
@@ -76,6 +119,9 @@ int main(){
   }
   
   display_image(s);
-  SDL_FreeSurface(s);
+  SDL_Surface *hori_dis = display_image(s);
+  hori_dis = horizon(s,1);
+  display_image(hori_dis);
+  SDL_FreeSurface(hori_dis);
   return 0;
 }
