@@ -6,7 +6,7 @@
 static inline
 Uint8* pixelref(SDL_Surface *surf, unsigned x, unsigned y){
   int bpp = surf->format->BytesPerPixel;
-  return (Uint8*)surf->pixel + y * surf->pitch + x * bpp;
+  return (Uint8*)surf->pixels + y * surf->pitch + x * bpp;
 }
 
 Uint32 getpixel(SDL_Surface *surface, unsigned x, unsigned y){
@@ -50,4 +50,5 @@ void putpixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel){
   case 4:
     *(Uint32 *)p = pixel;
     break;
+  }
 }

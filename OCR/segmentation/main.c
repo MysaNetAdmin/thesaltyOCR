@@ -51,8 +51,9 @@ SDL_Surface* display_image(SDL_Surface *img) {
   return screen;
 }
 
-int main(int i,char **path){
+int main(){
 
+  char *path = "syllabes-de-couleur.jpg";
   SDL_Surface* s = load_image(path);
   size_t width = s->w;
   size_t height = s->h;
@@ -65,6 +66,8 @@ int main(int i,char **path){
       Uint8 r,g,b;
       SDL_GetRGB(pix,s->format, &r, &g, &b);
       r = 0.3 * r + 0.59 * g + 0.11 * b;
+      if (r <= 123) r = 0;
+      else r = 255;
       g = r;
       b = r;
       pix = SDL_MapRGB(s -> format,r,g,b);
@@ -74,5 +77,5 @@ int main(int i,char **path){
   
   display_image(s);
   SDL_FreeSurface(s);
-  return i;
+  return 0;
 }
