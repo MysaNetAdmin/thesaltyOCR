@@ -126,13 +126,14 @@ SDL_Surface* horizon(SDL_Surface *img, size_t n){
       }
       else if(r < 122 && boo){
           if(cpt < n){
-            while(tmp < j - 2){
+            while(tmp < j - 1){
               pix = SDL_MapRGB(img-> format , 122, 122, 122);
               putpixel(img,tmp+1,i,pix);
               tmp++;
             }        
           }
           cpt = 0;
+	  tmp = j;
       }
     }
   }
@@ -168,7 +169,7 @@ int main(){
   display_image(s);
   SDL_Surface *hori_dis = display_image(s);
   SDL_FreeSurface(hori_dis); 
-  hori_dis = horizon(s,3);
+  hori_dis = horizon(s,10);
   display_image(hori_dis);
   SDL_FreeSurface(hori_dis);
   return 0;
