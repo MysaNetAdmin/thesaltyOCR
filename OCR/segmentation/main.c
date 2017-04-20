@@ -69,6 +69,7 @@ SDL_Surface* horizon(SDL_Surface *img, size_t n){
     cpt = 0;
     tmp = 0;
     boole = 0;
+    printf()
     for(size_t j = 0; j < width; ++j){
 
       Uint32 pix = getpixel(img,i,j);
