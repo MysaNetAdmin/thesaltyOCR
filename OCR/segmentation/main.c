@@ -125,7 +125,7 @@ SDL_Surface* horizon(SDL_Surface *img, size_t n){
       }
       else if(r < 122 && boo){
           if(cpt < n){
-            while(tmp < j - 2){
+            while(tmp < j - 1){
               pix = SDL_MapRGB(img-> format , 122, 122, 122);
               putpixel(img,tmp+1,i,pix);
               tmp++;
