@@ -58,7 +58,7 @@ SDL_Surface* init_img(SDL_Surface *img){
 }
 
 SDL_Surface* horizon(SDL_Surface *img, size_t n){
-  
+/*  
   SDL_Surface *res = img;
   int tmp;
   size_t width = img->w;
@@ -88,6 +88,41 @@ SDL_Surface* horizon(SDL_Surface *img, size_t n){
 
         tmp = j;
         boole = 1;
+      }
+    }
+  }
+  return res;
+  */
+  SDL_Surface *res = img;
+  size_t width = res->w;
+  size_t heigt = res->h;
+  int boo = 0;
+  int cpt;
+  int tmp;
+  int track = 0;
+  for(int i = 0;i < height;i++){
+    for(int j = 0;j < width;j++){
+      Uint32 pix = getpixel(img,i,j);
+      if (track){
+          if(pix == 0) {
+            track = 0;
+          }
+          else{
+            putpixel(res,i,j,8421504);
+          }
+      }
+      else{
+        if (boo && pix == 16777215){
+            cpt++;
+        }
+        else if (!(cpt > n || cpt + j > width) && pix == 0){
+            j = tmp;
+            track = 1;
+        }
+        else{
+          boo = 1;
+          tmp = j;
+        }
       }
     }
   }
