@@ -69,6 +69,7 @@ SDL_Surface* horizon(SDL_Surface *img, size_t n){
     cpt = 0;
     tmp = 0;
     boole = 0;
+    printf()
     for(size_t j = 0; j < width; ++j){
 
       Uint32 pix = getpixel(img,i,j);
@@ -132,6 +133,7 @@ SDL_Surface* horizon(SDL_Surface *img, size_t n){
             }        
           }
           cpt = 0;
+	  tmp = j;
       }
     }
   }
@@ -167,7 +169,7 @@ int main(){
   display_image(s);
   SDL_Surface *hori_dis = display_image(s);
   SDL_FreeSurface(hori_dis); 
-  hori_dis = horizon(s,3);
+  hori_dis = horizon(s,10);
   display_image(hori_dis);
   SDL_FreeSurface(hori_dis);
   return 0;
