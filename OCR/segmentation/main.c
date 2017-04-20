@@ -93,40 +93,49 @@ SDL_Surface* horizon(SDL_Surface *img, size_t n){
   }
   return res;
   */
-  SDL_Surface *res = img;
-  size_t width = res->w;
-  size_t heigt = res->h;
+  
+  size_t width = img->w;
+  size_t height = img->h;
   int boo = 0;
-  int cpt;
-  int tmp;
-  int track = 0;
-  for(int i = 0;i < height;i++){
-    for(int j = 0;j < width;j++){
-      Uint32 pix = getpixel(img,i,j);
-      if (track){
-          if(pix == 0) {
-            track = 0;
-          }
-          else{
-            putpixel(res,i,j,8421504);
-          }
+  size_t cpt;
+  size_t tmp;
+  for(size_t i = 0;i < height;i++){
+    boo = 0;
+    cpt = 0;
+    tmp = 0;
+    printf("height= %zu\n",i);
+    for(size_t j = 0;j < width;j++){
+      Uint32 pix = getpixel(img,j,i);
+      Uint8 r,g,b;
+      SDL_GetRGB(pix, img->format, &r, &g, &b);
+      printf("width= %zu\n",j);
+      /*if(r < 123)
+        boo = 1;
+      if(r > 123 && boo){
+        pix = SDL_MapRGB(img-> format , 122, 122, 122);
+        putpixel(img,j,i,pix);
+      }*/
+
+      if(r < 122 && !boo){
+        tmp = j;
+        boo = 1;
       }
-      else{
-        if (boo && pix == 16777215){
+      else if(r > 122 && boo){
             cpt++;
-        }
-        else if (!(cpt > n || cpt + j > width) && pix == 0){
-            j = tmp;
-            track = 1;
-        }
-        else{
-          boo = 1;
-          tmp = j;
-        }
+      }
+      else if(r < 122 && boo){
+          if(cpt < n){
+            while(tmp < j - 2){
+              pix = SDL_MapRGB(img-> format , 122, 122, 122);
+              putpixel(img,tmp+1,i,pix);
+              tmp++;
+            }        
+          }
+          cpt = 0;
       }
     }
   }
-  return res;
+  return img;
 }
 
 int main(){
@@ -135,6 +144,8 @@ int main(){
   SDL_Surface* s = load_image(path);
   size_t width = s->w;
   size_t height = s->h;
+  printf("%zu\n",width);
+  printf("%zu\n",height);
   SDL_Surface *displayed = display_image(s);
   SDL_FreeSurface(displayed);
   for(size_t i = 0; i < width; ++i){
@@ -155,7 +166,8 @@ int main(){
   
   display_image(s);
   SDL_Surface *hori_dis = display_image(s);
-  hori_dis = horizon(s,1);
+  SDL_FreeSurface(hori_dis); 
+  hori_dis = horizon(s,3);
   display_image(hori_dis);
   SDL_FreeSurface(hori_dis);
   return 0;
