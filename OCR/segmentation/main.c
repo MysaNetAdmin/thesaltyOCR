@@ -52,8 +52,18 @@ SDL_Surface* display_image(SDL_Surface *img) {
 }
 
 SDL_Surface* init_img(SDL_Surface *img){
+
   SDL_Surface* res = SDL_CreateRGBSurface(0,img->w,img->h,32,255,255,255,255);
-  SDL_FreeSurface(res);
+  for(int i = 0; i < img->w; i++){
+    for(int j = 0; j < img->h; j++){
+      Uint32 pix = getpixel(img,i,j);
+      Uint8 r, g, b;
+      SDL_GetRGB(pix, img -> format, &r, &g, &b);
+      Uint32 pix = SDL_MapRGB(img -> format, r, g, b);
+      putpixel(res,i,j,pix);
+    }
+  }
+
   return res;
 }
 
@@ -68,6 +78,8 @@ SDL_Surface* horizon(SDL_Surface *img, size_t n){
     boo = 0;
     cpt = 0;
     tmp = 0;
+    if(i % 100 == 0)
+      printf("horizon -> height = %zu\n",i);
     for(size_t j = 0;j < width;j++){
       Uint32 pix = getpixel(img,j,i);
       Uint8 r,g,b;
@@ -120,6 +132,8 @@ SDL_Surface* vertical(SDL_Surface *img, size_t n){
     boo = 0;
     cpt = 0;
     tmp = 0;
+    if(i % 100 == 0)
+      printf("vertical -> width = %zu\n",i);
     for(size_t j = 0;j < height;j++){
       Uint32 pix = getpixel(img,i,j);
       Uint8 r,g,b;
@@ -202,6 +216,7 @@ int main(){
 
   char *path = "syllabes-de-couleur.jpg";
   SDL_Surface* s = load_image(path);
+  SDL_Surface* m = load_image(path);
   size_t width = s->w;
   size_t height = s->h;
   printf("%zu\n",width);
@@ -225,21 +240,21 @@ int main(){
   }
   
   display_image(s);
-  SDL_Surface *hori_dis = display_image(s);
-  SDL_Surface *verti_dis = display_image(s);
-  SDL_Surface *merge_dis = display_image(s);
-  
+  SDL_Surface *hori_dis = init_img(display_image(s));
+  SDL_Surface *verti_dis = init_img(display_image(s));
+  SDL_Surface *merge_dis = init_img(display_image(s));
 
-  hori_dis = horizon(s,3);
-  verti_dis = vertical(s,3);
+  verti_dis = vertical(verti_dis,10);
+  hori_dis = horizon(hori_dis,3);
   //merge_dis = merge(hori_dis,verti_dis);
 
   display_image(hori_dis);
+  display_image(m);
   display_image(verti_dis);
-  display_image(merge_dis);
+  //display_image(merge_dis);
 
   SDL_FreeSurface(hori_dis);
   SDL_FreeSurface(verti_dis);
-  //SDL_FreeSurface(merge_dis);
-  return 0;
+  SDL_FreeSurface(merge_dis);
+  return 1;
 }
