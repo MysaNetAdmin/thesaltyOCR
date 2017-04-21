@@ -59,13 +59,15 @@ SDL_Surface* init_img(SDL_Surface *img){
       Uint32 pix = getpixel(img,i,j);
       Uint8 r, g, b;
       SDL_GetRGB(pix, img -> format, &r, &g, &b);
-      Uint32 pix = SDL_MapRGB(img -> format, r, g, b);
+      pix = SDL_MapRGB(img -> format, r, g, b);
       putpixel(res,i,j,pix);
     }
   }
 
   return res;
 }
+
+//undercircle the text in grey on horizontal and put everything which is not text in black
 
 SDL_Surface* horizon(SDL_Surface *img, size_t n){
 
@@ -121,6 +123,9 @@ SDL_Surface* horizon(SDL_Surface *img, size_t n){
   }
   return img;
 }
+
+//same thing in vertical
+
 SDL_Surface* vertical(SDL_Surface *img, size_t n){
 
   size_t width = img->w;
@@ -178,6 +183,8 @@ SDL_Surface* vertical(SDL_Surface *img, size_t n){
   return img;
 }
 
+//create a new Surface which as been merged with the the two results of the two functions before
+
 SDL_Surface* merge(SDL_Surface *img1, SDL_Surface *img2){
 
   SDL_Surface* res = img1;
@@ -210,7 +217,43 @@ SDL_Surface* merge(SDL_Surface *img1, SDL_Surface *img2){
   }
   return res;
 }
+//put in white each part which is not text
+SDL_Surface* text(SDL_Surface *img){
 
+    return img;
+}
+//separate each character with segment
+SDL_Surface* grill(SDL_Surface *img){
+
+  size_t width = img->w;
+  size_t height = ing->h;
+  int boo = 0;
+  size_t up,down,right,left = height,0,0,width;
+  for(size_t i = 0;i < height;i++){
+    for(size_t j = 0;j < width;j++){
+      Uint32 pix = getpixel(img,i,j);
+      Uint8 r,g,b;
+      SDL_GetRGB(pix,img->format,&r,&g,&b);
+      if( )
+      if(r == 0){
+        if (i < up)
+          up = i;
+        if (i > down)
+          down = i;
+        if (j < left)
+          left = j;
+        if (j > right)
+          right = j;
+        boo = 1;
+      }
+      else if(boo){
+        break;
+      }
+    }
+  }
+}
+
+//save each character in a 16x16 matrix 0 = white, 1 = black = letter
 
 int main(){
 
@@ -240,21 +283,21 @@ int main(){
   }
   
   display_image(s);
-  SDL_Surface *hori_dis = init_img(display_image(s));
+  //SDL_Surface *hori_dis = init_img(display_image(s));
   SDL_Surface *verti_dis = init_img(display_image(s));
-  SDL_Surface *merge_dis = init_img(display_image(s));
+  //SDL_Surface *merge_dis = init_img(display_image(s));
 
   verti_dis = vertical(verti_dis,10);
-  hori_dis = horizon(hori_dis,3);
+  //hori_dis = horizon(hori_dis,3);
   //merge_dis = merge(hori_dis,verti_dis);
 
-  display_image(hori_dis);
+  //display_image(hori_dis);
   display_image(m);
   display_image(verti_dis);
   //display_image(merge_dis);
 
-  SDL_FreeSurface(hori_dis);
+  //SDL_FreeSurface(hori_dis);
   SDL_FreeSurface(verti_dis);
-  SDL_FreeSurface(merge_dis);
+  //SDL_FreeSurface(merge_dis);
   return 1;
 }
