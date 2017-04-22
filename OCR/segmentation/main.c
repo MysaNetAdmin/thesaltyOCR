@@ -69,47 +69,63 @@ SDL_Surface* init_img(SDL_Surface *img){
 
 //undercircle the text in grey on horizontal and put everything which is not text in black
 
-SDL_Surface* horizon(SDL_Surface *img, size_t n){
+SDL_Surface* horizon(SDL_Surface *img){
 
   size_t width = img->w;
   size_t height = img->h;
   int boo = 0;
-  size_t cpt;
-  size_t tmp;
+  size_t cpt,cpt2,left,right;
+  int track = 0;
+  size_t frontline,backline;;
   for(size_t i = 0;i < height;i++){
-    boo = 0;
     cpt = 0;
-    tmp = 0;
     for(size_t j = 0;j < width;j++){
       Uint32 pix = getpixel(img,j,i);
       Uint8 r,g,b;
       SDL_GetRGB(pix, img->format, &r, &g, &b);
 
       if(r < 122 && !boo){
-        tmp = j;
+        frontline = i;
         boo = 1;
       }
-      else if(r > 122 && boo){
-            cpt++;
-      }
       else if(r < 122 && boo){
-          if(cpt < n){
-            while(tmp < j - 1){
-              pix = SDL_MapRGB(img-> format , 0, 0, 0);
-              putpixel(img,tmp+1,i,pix);
-              tmp++;
-            }        
-          }
-          else if(cpt < n * 3){
-            while(tmp < j - 1){
-              pix = SDL_MapRGB(img-> format , 122, 122, 122);
-              putpixel(img,tmp+1,i,pix);
-              tmp++;
-            }       
-          }
+        cpt++;
+      }
+    }
+    if(boo && cpt == 0){
+      backline = i;
+      boo = 0; 
+      for(size_t k = 0 ;k < width;k++){
+        Uint32 pix = SDL_MapRGB(img->format,0,0,0);
+        putpixel(img,k,frontline - 1,pix);
+        putpixel(img,k,backline ,pix);
+      }
 
-          cpt = 0;
-	  tmp = j;
+      // on parcours l'interstice entre ces deux bandes
+      for(size_t k = 0;k < width;k++){
+        cpt2 = 0;
+        for(size_t q = frontline ;q < backline - 1;q++){
+
+          Uint32 pix = getpixel(img,q,k);
+          Uint8 r,g,b;
+          SDL_GetRGB(pix,img->format,&r,&g,&b);
+          if(r < 122 && !track) {
+            left = k - 1;
+            track = 1;
+          }
+          else if(r < 122 && track){
+            cpt2++;
+          }
+        }
+        if(track && cpt2 == 0){
+          right = k;
+          for(size_t x = frontline;x < backline - 1;x++){
+            Uint32 pix = SDL_MapRGB(img->format,0,0,0);
+            putpixel(img,x,left,pix);
+            putpixel(img,x,right,pix);
+          }
+          track = 0;
+        }
       }
     }
   }
@@ -118,53 +134,63 @@ SDL_Surface* horizon(SDL_Surface *img, size_t n){
 
 //same thing in vertical
 
-SDL_Surface* vertical(SDL_Surface *img, size_t n){
+/*SDL_Surface* vertical(SDL_Surface *img){
 
   size_t width = img->w;
   size_t height = img->h;
   int boo = 0;
+  int track = 0;
   size_t cpt;
-  size_t tmp;
-  for(size_t i = 0;i < width;i++){
-    boo = 0;
+  size_t cpt2;
+  size_t tmptop,tmpbot;
+  size_t left,right;
+  for(size_t i = 0;i < height;i++){
     cpt = 0;
-    tmp = 0;
-    for(size_t j = 0;j < height;j++){
-      Uint32 pix = getpixel(img,i,j);
+    for(size_t j = 0;j < width;j++){
+      Uint32 pix = getpixel(img,j,i);
       Uint8 r,g,b;
       SDL_GetRGB(pix, img->format, &r, &g, &b);
 
       if(r < 122 && !boo){
-        tmp = j;
+        tmptop = i;
         boo = 1;
       }
       else if(r > 122 && boo){
-            cpt++;
-      }
-      else if(r < 122 && boo){
-          if(cpt < n){
-            while(tmp < j - 1){
-              pix = SDL_MapRGB(img-> format , 0, 0, 0);
-              putpixel(img,i,tmp + 1,pix);
-              tmp++;
-            }        
-          }
-          else if(cpt < n * 10){
-            while(tmp < j - 1){
-              pix = SDL_MapRGB(img-> format , 122, 122, 122);
-              putpixel(img,i,tmp + 1,pix);
-              tmp++;
-            }       
-          }
+        cpt++;
+      }   
+    }
+    if(boo && cpt == 0){
+      tmpbot = i;
+      for(size_t k = 0;k < width;k++){
+        cpt2 = 0;
+        for(size_t q = tmptop ;q < tmpbot - 1;q++){
 
-          cpt = 0;
-	  tmp = j;
+          Uint32 pix = getpixel(img,q,k);
+          Uint8 r,g,b;
+          SDL_GetRGB(pix,img->format,&r,&g,&b);
+          if(r < 122 && !track) {
+            left = k + 1;
+            track = 1;
+          }
+          else if(r > 122 && track){
+            cpt2++;
+          }
+        }
+        if(track && cpt == 0){
+          right = k;
+          for(size_t x = tmptop;x < tmpbot - 1;x++){
+            Uint32 pix = SDL_MapRGB(img->format,0,0,0);
+            putpixel(img,x,left,pix);
+            putpixel(img,x,right,pix);
+          }
+        }
       }
     }
   }
+
   return img;
 }
-
+*/
 //create a new Surface which as been merged with the the two results of the two functions before
 
 SDL_Surface* merge(SDL_Surface *verti, SDL_Surface *hori){
@@ -194,7 +220,7 @@ SDL_Surface* merge(SDL_Surface *verti, SDL_Surface *hori){
 //put in white each part which is not text
 SDL_Surface* text(SDL_Surface *img){
 
-    return img;
+  return img;
 }
 //separate each character with segment
 /*SDL_Surface* grill(SDL_Surface *img){
@@ -207,27 +233,27 @@ SDL_Surface* text(SDL_Surface *img){
   down = 0;
   right = 0;
   left = width;
-  
+
   for(size_t i = 0; i < height - 1;i++){
-    for(size_t j = 0; j < width - 1;j++){
-      
-      Uint32 pix = getpixel(img,j,i)
-      Uint8 r,g,b;
-      SDL_GetRGB(pix,ver->format,&r,&g,&b);
-      if(r == 0 || r == 122){
-          if(j < left) left = j;
-          if(j > right) right = j;
-          if(i < up) up = i;
-          if(i > down) down = i; 
-      }
-      if(r == 255){
-        //u && n
-      }
+  for(size_t j = 0; j < width - 1;j++){
 
-    }
+  Uint32 pix = getpixel(img,j,i)
+  Uint8 r,g,b;
+  SDL_GetRGB(pix,ver->format,&r,&g,&b);
+  if(r == 0 || r == 122){
+  if(j < left) left = j;
+  if(j > right) right = j;
+  if(i < up) up = i;
+  if(i > down) down = i; 
   }
+  if(r == 255){
+//u && n
+}
 
-  return img;
+}
+}
+
+return img;
 }*/
 
 //save each character in a 16x16 matrix 0 = white, 1 = black = letter
@@ -243,13 +269,13 @@ SDL_Surface* compression(SDL_Surface* img){
   size_t h = height / 16;
   for(size_t i = 0;i < height;i++){
     for(size_t j = 0;j < width;j++){
-        if(j % w == 0 && i % h == 0){
-          Uint32 pix = getpixel(img,j,i);
-          Uint8 r,g,b;
-          SDL_GetRGB(pix,img->format,&r,&g,&b);
-          pix = SDL_MapRGB(img->format,r,g,b);
-          putpixel(img,j,i,pix);
-        }
+      if(j % w == 0 && i % h == 0){
+        Uint32 pix = getpixel(img,j,i);
+        Uint8 r,g,b;
+        SDL_GetRGB(pix,img->format,&r,&g,&b);
+        pix = SDL_MapRGB(img->format,r,g,b);
+        putpixel(img,j,i,pix);
+      }
     }
   }
   return res;
@@ -283,14 +309,14 @@ int main(){
     }
   }
   display_image(ver);
-  SDL_Surface* verti_dis = display_image(ver);
   SDL_Surface* hori_dis = display_image(hor);
-  SDL_Surface* merge_dis = display_image(ver);
-  verti_dis = vertical(ver,3);
-  hori_dis = horizon(hor,1);
-  display_image(verti_dis);
+  //SDL_Surface* verti_dis = display_image(ver);
+  //SDL_Surface* merge_dis = display_image(ver);
+  hori_dis = horizon(hor);
   display_image(hori_dis);
-  merge_dis = merge(verti_dis,hori_dis);
-  display_image(merge_dis);
+  //verti_dis = vertical(hori_dis);
+  //display_image(verti_dis);
+  //merge_dis = merge(verti_dis,hori_dis);
+  //display_image(merge_dis);
   return 0;
 }
