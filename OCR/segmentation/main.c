@@ -187,12 +187,10 @@ SDL_Surface* vertical(SDL_Surface *img, size_t n){
 
 SDL_Surface* merge(SDL_Surface *img1, SDL_Surface *img2){
 
-  SDL_Surface* res = img1;
-  size_t width = img1->w;
-  size_t height = img1->h;
-  for(size_t i = 0;i < height;i++){
-    for(size_t j = 0;j < width;j++){
-      
+  size_t width = img2->w;
+  size_t height = img2->h;
+  for(size_t i = 0;i < width;i++){
+    for(size_t j = 0;j < height;j++){
       Uint32 pix;
       Uint32 pix1 = getpixel(img1,i,j);
       Uint32 pix2 = getpixel(img2,i,j);
@@ -204,18 +202,18 @@ SDL_Surface* merge(SDL_Surface *img1, SDL_Surface *img2){
       SDL_GetRGB(pix2,img2->format,&r2,&g2,&b2);
 
       if(r1 == 255 || r2 == 255){
-          pix = SDL_MapRGB(res->format,255,255,255);
+          pix = SDL_MapRGB(img1->format,255,255,255);
       }
       else if(r1 == 122 || r2 == 122){
-          pix = SDL_MapRGB(res->format,122,122,122);
+          pix = SDL_MapRGB(img1->format,122,122,122);
       }
       else{
-          pix = SDL_MapRGB(res->format,0,0,0);
+          pix = SDL_MapRGB(img1->format,0,0,0);
       }
-      putpixel(res,i,j,pix);
+      putpixel(img1,i,j,pix);
     }
   }
-  return res;
+  return img1;
 }
 //put in white each part which is not text
 SDL_Surface* text(SDL_Surface *img){
@@ -226,15 +224,17 @@ SDL_Surface* text(SDL_Surface *img){
 SDL_Surface* grill(SDL_Surface *img){
 
   size_t width = img->w;
-  size_t height = ing->h;
+  size_t height = img->h;
   int boo = 0;
-  size_t up,down,right,left = height,0,0,width;
+  size_t up = height;
+  size_t down = 0;
+  size_t right = 0;
+  size_t left = width;
   for(size_t i = 0;i < height;i++){
     for(size_t j = 0;j < width;j++){
       Uint32 pix = getpixel(img,i,j);
       Uint8 r,g,b;
       SDL_GetRGB(pix,img->format,&r,&g,&b);
-      if( )
       if(r == 0){
         if (i < up)
           up = i;
@@ -246,11 +246,10 @@ SDL_Surface* grill(SDL_Surface *img){
           right = j;
         boo = 1;
       }
-      else if(boo){
-        break;
+      
       }
     }
-  }
+  return img;
 }
 
 //save each character in a 16x16 matrix 0 = white, 1 = black = letter
@@ -258,46 +257,39 @@ SDL_Surface* grill(SDL_Surface *img){
 int main(){
 
   char *path = "syllabes-de-couleur.jpg";
-  SDL_Surface* s = load_image(path);
-  SDL_Surface* m = load_image(path);
-  size_t width = s->w;
-  size_t height = s->h;
+  SDL_Surface* ver = load_image(path);
+  SDL_Surface* hor = load_image(path);
+  size_t width = ver->w;
+  size_t height = ver->h;
   printf("%zu\n",width);
   printf("%zu\n",height);
-  SDL_Surface *displayed = display_image(s);
+  SDL_Surface *displayed = display_image(ver);
   SDL_FreeSurface(displayed);
   for(size_t i = 0; i < width; ++i){
     for(size_t j = 0; j < height; ++j){
 
-      Uint32 pix = getpixel(s,i,j);
+      Uint32 pix = getpixel(ver,i,j);
       Uint8 r,g,b;
-      SDL_GetRGB(pix,s->format, &r, &g, &b);
+      SDL_GetRGB(pix,ver->format, &r, &g, &b);
       r = 0.3 * r + 0.59 * g + 0.11 * b;
       if (r <= 123) r = 0;
       else r = 255;
       g = r;
       b = r;
-      pix = SDL_MapRGB(s -> format,r,g,b);
-      putpixel(s,i,j,pix);
+      pix = SDL_MapRGB(ver -> format,r,g,b);
+      putpixel(ver,i,j,pix);
+      putpixel(hor,i,j,pix);
     }
   }
-  
-  display_image(s);
-  //SDL_Surface *hori_dis = init_img(display_image(s));
-  SDL_Surface *verti_dis = init_img(display_image(s));
-  //SDL_Surface *merge_dis = init_img(display_image(s));
-
-  verti_dis = vertical(verti_dis,10);
-  //hori_dis = horizon(hori_dis,3);
-  //merge_dis = merge(hori_dis,verti_dis);
-
-  //display_image(hori_dis);
-  display_image(m);
+  display_image(ver);
+  SDL_Surface* verti_dis = display_image(ver);
+  SDL_Surface* hori_dis = display_image(hor);
+  SDL_Surface* merge_dis = display_image(ver);
+  verti_dis = vertical(ver,3);
+  hori_dis = horizon(hor,3);
   display_image(verti_dis);
-  //display_image(merge_dis);
-
-  //SDL_FreeSurface(hori_dis);
-  SDL_FreeSurface(verti_dis);
-  //SDL_FreeSurface(merge_dis);
-  return 1;
+  display_image(hori_dis);
+  merge_dis = merge(verti_dis,hori_dis);
+  display_image(merge_dis);
+  return 0;
 }
