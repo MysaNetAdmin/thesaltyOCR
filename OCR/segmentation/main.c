@@ -4,6 +4,67 @@
 #include <err.h>
 #include "pixel_operations.h"
 
+/* standard linked lists */
+struct list {
+  struct list *next;
+  void        *data;
+};
+
+/*
+ * queue container: replace sentinel and add abstraction
+ */
+struct queue {
+  struct list *store;
+  size_t       size;
+};
+
+/*
+ * queue_is_empty(queue) test for emptyness
+ */
+int queue_is_empty(struct queue *queue) {
+
+  if (queue->size == 0) {
+    return (1);
+  } else {
+    return (0);
+  }
+}
+
+/*
+ * queue_push(queue, elm) push elm
+ */
+void queue_push(struct queue *queue, void *elm) {
+
+  struct list* node = malloc(sizeof (struct list));
+  node->next = (queue_is_empty(queue) ? node : queue->store->next);
+  node->data = elm;
+
+  if (!queue_is_empty(queue)) {
+    queue->store->next = node;
+  }
+  queue->store = node;
+  queue->size += 1;
+}
+
+/*
+ * queue_pop(queue) pop the next element (FIFO order)
+ * returns NULL if the queue is empty
+ */
+void* queue_pop(struct queue *queue) {
+
+  if (queue_is_empty(queue)) {
+    return (NULL);
+  } else {
+    struct list* tmp = queue->store->next;
+    queue->store->next = queue->store->next->next;
+    void* elm = tmp->data;
+    //free(tmp);
+    queue->size -= 1;
+    return (elm);
+  }
+}
+
+
 void wait_for_keypressed(void){
   SDL_Event             event;
   for(;;){
@@ -69,14 +130,19 @@ SDL_Surface* init_img(SDL_Surface *img){
 
 //undercircle the text in grey on horizontal and put everything which is not text in black
 
-SDL_Surface* horizon(SDL_Surface *img){
+struct queue* horizon(SDL_Surface *img){
+
+  struct queue *queue;
+  queue = malloc(sizeof(struct queue));
+  queue->store = NULL;
+  queue->size = 0;
 
   size_t width = img->w;
   size_t height = img->h;
   int boo = 0;
-  size_t cpt,cpt2,left,right;
-  int track = 0;
-  size_t frontline,backline;;
+  size_t cpt;
+  size_t frontline,backline;
+
   for(size_t i = 0;i < height;i++){
     cpt = 0;
     for(size_t j = 0;j < width;j++){
@@ -94,103 +160,76 @@ SDL_Surface* horizon(SDL_Surface *img){
     }
     if(boo && cpt == 0){
       backline = i;
-      boo = 0; 
-      for(size_t k = 0 ;k < width;k++){
-        Uint32 pix = SDL_MapRGB(img->format,0,0,0);
-        putpixel(img,k,frontline - 1,pix);
-        putpixel(img,k,backline ,pix);
-      }
-
-      // on parcours l'interstice entre ces deux bandes
-      for(size_t k = 0;k < width;k++){
-        cpt2 = 0;
-        for(size_t q = frontline ;q < backline - 1;q++){
-
-          Uint32 pix = getpixel(img,q,k);
-          Uint8 r,g,b;
-          SDL_GetRGB(pix,img->format,&r,&g,&b);
-          if(r < 122 && !track) {
-            left = k - 1;
-            track = 1;
-          }
-          else if(r < 122 && track){
-            cpt2++;
-          }
-        }
-        if(track && cpt2 == 0){
-          right = k;
-          for(size_t x = frontline;x < backline - 1;x++){
-            Uint32 pix = SDL_MapRGB(img->format,0,0,0);
-            putpixel(img,x,left,pix);
-            putpixel(img,x,right,pix);
-          }
-          track = 0;
+      boo = 0;
+      SDL_Surface* inter = SDL_CreateRGBSurface(0,width,backline - frontline,32,0,0,0,0);
+      for(size_t k = frontline; k < backline; k++)
+      {
+        for(size_t l = 0; l < width ;l++)
+        {
+          Uint32 pix = getpixel(img,l,k);
+          putpixel(inter,l,k - frontline,pix);
         }
       }
+      display_image(inter);
+      queue_push(queue,inter);
+
     }
   }
-  return img;
+  return queue;
 }
-
 //same thing in vertical
 
-/*SDL_Surface* vertical(SDL_Surface *img){
+struct queue* vertical(struct queue *kebab)
+{
+  struct queue *queue;
+  queue = malloc(sizeof(struct queue));
+  queue->store = NULL;
+  queue->size = 0;
 
-  size_t width = img->w;
-  size_t height = img->h;
-  int boo = 0;
-  int track = 0;
-  size_t cpt;
-  size_t cpt2;
-  size_t tmptop,tmpbot;
-  size_t left,right;
-  for(size_t i = 0;i < height;i++){
-    cpt = 0;
-    for(size_t j = 0;j < width;j++){
-      Uint32 pix = getpixel(img,j,i);
-      Uint8 r,g,b;
-      SDL_GetRGB(pix, img->format, &r, &g, &b);
+  while(!queue_is_empty(kebab))
+  {
+    SDL_Surface* img = queue_pop(kebab);
+    size_t width = img->w;
+    size_t height = img->h;
+    int boo = 0;
+    size_t cpt;
+    size_t frontline,backline;
+    display_image(img);
+    for(size_t i = 0;i < width;i++){
+      cpt = 0;
+      for(size_t j = 0;j < height;j++){
+        Uint32 pix = getpixel(img,i,j);
+        Uint8 r,g,b;
+        SDL_GetRGB(pix, img->format, &r, &g, &b);
 
-      if(r < 122 && !boo){
-        tmptop = i;
-        boo = 1;
+        if(r < 122 && !boo){
+          frontline = i;
+          boo = 1;
+        }
+        else if(r < 122 && boo){
+          cpt++;
+        }
       }
-      else if(r > 122 && boo){
-        cpt++;
-      }   
-    }
-    if(boo && cpt == 0){
-      tmpbot = i;
-      for(size_t k = 0;k < width;k++){
-        cpt2 = 0;
-        for(size_t q = tmptop ;q < tmpbot - 1;q++){
+      if(boo && cpt == 0){
+        backline = i;
+        boo = 0;
+        SDL_Surface* inter = SDL_CreateRGBSurface(0,backline - frontline,height,32,0,0,0,0);
+        for(size_t k = frontline; k < backline; k++)
+        {
+          for(size_t l = 0; l < height ;l++)
+          {
+            Uint32 pix = getpixel(img,k,l);
+            putpixel(img,k - frontline,l,pix);
+          }
+        }
+        display_image(inter);
+        queue_push(queue,inter);
 
-          Uint32 pix = getpixel(img,q,k);
-          Uint8 r,g,b;
-          SDL_GetRGB(pix,img->format,&r,&g,&b);
-          if(r < 122 && !track) {
-            left = k + 1;
-            track = 1;
-          }
-          else if(r > 122 && track){
-            cpt2++;
-          }
-        }
-        if(track && cpt == 0){
-          right = k;
-          for(size_t x = tmptop;x < tmpbot - 1;x++){
-            Uint32 pix = SDL_MapRGB(img->format,0,0,0);
-            putpixel(img,x,left,pix);
-            putpixel(img,x,right,pix);
-          }
-        }
       }
     }
   }
-
-  return img;
+  return queue;
 }
-*/
 //create a new Surface which as been merged with the the two results of the two functions before
 
 SDL_Surface* merge(SDL_Surface *verti, SDL_Surface *hori){
@@ -309,11 +348,12 @@ int main(){
     }
   }
   display_image(ver);
-  SDL_Surface* hori_dis = display_image(hor);
+  //SDL_Surface* hori_dis = display_image(hor);
   //SDL_Surface* verti_dis = display_image(ver);
   //SDL_Surface* merge_dis = display_image(ver);
-  hori_dis = horizon(hor);
-  display_image(hori_dis);
+  struct queue *queue;
+  queue = vertical(horizon(hor));
+  //display_image(hori_dis);
   //verti_dis = vertical(hori_dis);
   //display_image(verti_dis);
   //merge_dis = merge(verti_dis,hori_dis);
