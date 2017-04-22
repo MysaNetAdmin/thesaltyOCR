@@ -80,18 +80,10 @@ SDL_Surface* horizon(SDL_Surface *img, size_t n){
     boo = 0;
     cpt = 0;
     tmp = 0;
-    if(i % 100 == 0)
-      printf("horizon -> height = %zu\n",i);
     for(size_t j = 0;j < width;j++){
       Uint32 pix = getpixel(img,j,i);
       Uint8 r,g,b;
       SDL_GetRGB(pix, img->format, &r, &g, &b);
-      /*if(r < 123)
-        boo = 1;
-      if(r > 123 && boo){
-        pix = SDL_MapRGB(img-> format , 122, 122, 122);
-        putpixel(img,j,i,pix);
-      }*/
 
       if(r < 122 && !boo){
         tmp = j;
@@ -137,20 +129,10 @@ SDL_Surface* vertical(SDL_Surface *img, size_t n){
     boo = 0;
     cpt = 0;
     tmp = 0;
-    if(i % 100 == 0)
-      printf("vertical -> width = %zu\n",i);
     for(size_t j = 0;j < height;j++){
       Uint32 pix = getpixel(img,i,j);
       Uint8 r,g,b;
       SDL_GetRGB(pix, img->format, &r, &g, &b);
-      /*if(r < 123)
-        boo = 1;
-      if(r > 123 && boo){
-        pix = SDL_MapRGB(img-> format , 122, 122, 122);
-        putpixel(img,j,i,pix);
-      }*/
-
-     
 
       if(r < 122 && !boo){
         tmp = j;
@@ -185,35 +167,29 @@ SDL_Surface* vertical(SDL_Surface *img, size_t n){
 
 //create a new Surface which as been merged with the the two results of the two functions before
 
-SDL_Surface* merge(SDL_Surface *img1, SDL_Surface *img2){
+SDL_Surface* merge(SDL_Surface *verti, SDL_Surface *hori){
 
-  size_t width = img2->w;
-  size_t height = img2->h;
+  size_t width = verti->w;
+  size_t height = verti->h;
   for(size_t i = 0;i < width;i++){
     for(size_t j = 0;j < height;j++){
       Uint32 pix;
-      Uint32 pix1 = getpixel(img1,i,j);
-      Uint32 pix2 = getpixel(img2,i,j);
+      Uint32 pix_verti = getpixel(verti,i,j);
+      Uint32 pix_hori = getpixel(hori,i,j);
 
-      Uint8 r1,g1,b1;
-      Uint8 r2,g2,b2;
+      Uint8 r_verti,g_verti,b_verti;
+      Uint8 r_hori,g_hori,b_hori;
 
-      SDL_GetRGB(pix1,img1->format,&r1,&g1,&b1);
-      SDL_GetRGB(pix2,img2->format,&r2,&g2,&b2);
-
-      if(r1 == 255 || r2 == 255){
-          pix = SDL_MapRGB(img1->format,255,255,255);
+      SDL_GetRGB(pix_verti,verti->format,&r_verti,&g_verti,&b_verti);
+      SDL_GetRGB(pix_hori,hori->format,&r_hori,&g_hori,&b_hori);
+      if(r_verti == 122 || r_hori == 122)
+      {
+        pix = SDL_MapRGB(verti -> format,122,122,122);
+        putpixel(verti,i,j,pix);
       }
-      else if(r1 == 122 || r2 == 122){
-          pix = SDL_MapRGB(img1->format,122,122,122);
-      }
-      else{
-          pix = SDL_MapRGB(img1->format,0,0,0);
-      }
-      putpixel(img1,i,j,pix);
     }
   }
-  return img1;
+  return verti;
 }
 //put in white each part which is not text
 SDL_Surface* text(SDL_Surface *img){
@@ -221,38 +197,63 @@ SDL_Surface* text(SDL_Surface *img){
     return img;
 }
 //separate each character with segment
-SDL_Surface* grill(SDL_Surface *img){
+/*SDL_Surface* grill(SDL_Surface *img){
 
   size_t width = img->w;
   size_t height = img->h;
-  int boo = 0;
-  size_t up = height;
-  size_t down = 0;
-  size_t right = 0;
-  size_t left = width;
-  for(size_t i = 0;i < height;i++){
-    for(size_t j = 0;j < width;j++){
-      Uint32 pix = getpixel(img,i,j);
-      Uint8 r,g,b;
-      SDL_GetRGB(pix,img->format,&r,&g,&b);
-      if(r == 0){
-        if (i < up)
-          up = i;
-        if (i > down)
-          down = i;
-        if (j < left)
-          left = j;
-        if (j > right)
-          right = j;
-        boo = 1;
-      }
+
+  size_t up ,down,left,right;
+  up = height;
+  down = 0;
+  right = 0;
+  left = width;
+  
+  for(size_t i = 0; i < height - 1;i++){
+    for(size_t j = 0; j < width - 1;j++){
       
+      Uint32 pix = getpixel(img,j,i)
+      Uint8 r,g,b;
+      SDL_GetRGB(pix,ver->format,&r,&g,&b);
+      if(r == 0 || r == 122){
+          if(j < left) left = j;
+          if(j > right) right = j;
+          if(i < up) up = i;
+          if(i > down) down = i; 
       }
+      if(r == 255){
+        //u && n
+      }
+
     }
+  }
+
   return img;
-}
+}*/
 
 //save each character in a 16x16 matrix 0 = white, 1 = black = letter
+
+SDL_Surface* compression(SDL_Surface* img){
+
+  size_t width = img->w;
+  size_t height = img->h;
+  SDL_Surface* res = img;
+  res->w = 16;
+  res->h = 16;
+  size_t w = width / 16;
+  size_t h = height / 16;
+  for(size_t i = 0;i < height;i++){
+    for(size_t j = 0;j < width;j++){
+        if(j % w == 0 && i % h == 0){
+          Uint32 pix = getpixel(img,j,i);
+          Uint8 r,g,b;
+          SDL_GetRGB(pix,img->format,&r,&g,&b);
+          pix = SDL_MapRGB(img->format,r,g,b);
+          putpixel(img,j,i,pix);
+        }
+    }
+  }
+  return res;
+}
 
 int main(){
 
@@ -286,7 +287,7 @@ int main(){
   SDL_Surface* hori_dis = display_image(hor);
   SDL_Surface* merge_dis = display_image(ver);
   verti_dis = vertical(ver,3);
-  hori_dis = horizon(hor,3);
+  hori_dis = horizon(hor,1);
   display_image(verti_dis);
   display_image(hori_dis);
   merge_dis = merge(verti_dis,hori_dis);
