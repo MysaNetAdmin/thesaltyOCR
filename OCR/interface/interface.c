@@ -1,18 +1,31 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 #include <gtk/gtk.h>
 
-int main (int argc, char **argv)
+int main(int argc, char *argv[])
 {
-  /* Initialisation de GTK+ */
-  gtk_init (&argc, &argv);
-
-  /* Creation de la fenetre principale de notre application */
-
-  /* Lancement de la boucle principale */
-  gtk_main();
-  return EXIT_SUCCESS;
+    GtkBuilder      *builder; 
+    GtkWidget       *window;
+ 
+    gtk_init(&argc, &argv);
+ 
+    builder = gtk_builder_new();
+    gtk_builder_add_from_file (builder, "interface.glade", NULL);
+ 
+    window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
+    gtk_builder_connect_signals(builder, NULL);
+ 
+    g_object_unref(builder);
+ 
+    gtk_widget_show(window);                
+    gtk_main();
+ 
+    return 0;
 }
-
+ 
+// called when window is closed
+void on_window_main_destroy()
+{
+    gtk_main_quit();
+}

@@ -1,12 +1,25 @@
-C=gcc
+# Makefile
+ 
+CC=gcc
+ 
 CPPFLAGS= `pkg-config --cflags sdl gtk+-3.0`
-CFLAGS= -Wall -Wextra -std=c99 -O3
-LDLIBS= `pkg-config --libs sdl gtk+-3.0 gmodule-2.0` -lSDL_image -lm -export-dynamic
-EXEC= interface.c
+CFLAGS= -Wall -Wextra -std=c99
+LDFLAGS=
+LDLIBS= `pkg-config --libs sdl gtk+-3.0`
  
-all: $(EXEC)
+SRC= interface.c
+OBJ= ${SRC:.c=.o}
+DEP= ${SRC:.c=.d}
  
-main: interface.c
-	      $(CC) -o $@ $^ $(LDLIBS)
+all: interface
+ 
+main: ${OBJ}
+ 
+debug: CFLAGS+= -O0 -g
+debug: main
+ 
 clean:
-       rm -rf *.o *.save *~ *.bak *.swp $(EXEC)
+	rm -f ${OBJ} ${DEP}
+	rm -f main
+ 
+# END
