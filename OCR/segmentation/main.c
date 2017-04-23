@@ -381,5 +381,13 @@ int main(){
   //display_image(verti_dis);
   //merge_dis = merge(verti_dis,hori_dis);
   //display_image(merge_dis);
+  struct queue *res;
+  res = malloc(sizeof(struct queue));
+  res->store = NULL;
+  res->size = 0;
+
+  for(int i = 0;i < queue->size;i++){
+      queue_push(res,matrix(queue[i]));
+  }
   return 0;
 }
