@@ -4,8 +4,9 @@
 #include <err.h>
 #include "pixel_operations.h"
 
-/* standard linked lists */
-struct list {
+
+struct list{
+
   struct list *next;
   void        *data;
 };
@@ -170,9 +171,7 @@ struct queue* horizon(SDL_Surface *img){
           putpixel(inter,l,k - frontline,pix);
         }
       }
-      display_image(inter);
       queue_push(queue,inter);
-
     }
   }
   return queue;
@@ -189,6 +188,7 @@ struct queue* vertical(struct queue *kebab)
   while(!queue_is_empty(kebab))
   {
     SDL_Surface* img = queue_pop(kebab);
+    display_image(img);
     size_t width = img->w;
     size_t height = img->h;
     int boo = 0;
@@ -219,12 +219,13 @@ struct queue* vertical(struct queue *kebab)
           for(size_t l = 0; l < height ;l++)
           {
             Uint32 pix = getpixel(img,k,l);
-            putpixel(img,k - frontline,l,pix);
+            putpixel(inter,k - frontline,l,pix);
           }
         }
         display_image(inter);
         queue_push(queue,inter);
-
+        printf("width inter = %d",inter->w);
+        printf(" / height inter = %d\n",inter->h);
       }
     }
   }
@@ -320,17 +321,23 @@ SDL_Surface* compression(SDL_Surface* img){
   return res;
 }
 
-int[][] matrix(SDL_Surface* img){
+int** matrix (SDL_Surface* img){
 
   size_t width = img->w;
   size_t height = img->h;
-  int res[16][16];
 
-  for(int i = 0;i < height;i++){
-    for(int j = 0;j < width;j++){
+  int** res = malloc(sizeof *res *16);
+  for(int i = 0;i < 16;i++){
+    res[i] = malloc(sizeof **res * 16);
+  }
+
+  for(size_t i = 0;i < height;i++){
+    for(size_t j = 0;j < width;j++){
+
         Uint32 pix = getpixel(img,j,i);
         Uint8 r,g,b;
-        SDL_GetRGB(img->format,&r,&g,&b);
+        SDL_GetRGB(pix,img->format,&r,&g,&b);
+
         if(r < 122){
           res[i][j] = 1;
         }
@@ -381,13 +388,12 @@ int main(){
   //display_image(verti_dis);
   //merge_dis = merge(verti_dis,hori_dis);
   //display_image(merge_dis);
-  struct queue *res;
-  res = malloc(sizeof(struct queue));
-  res->store = NULL;
-  res->size = 0;
+  //int[queue->size] res;
 
-  for(int i = 0;i < queue->size;i++){
-      queue_push(res,matrix(queue[i]));
-  }
+  /*for(size_t i = 0;i < queue->size;i++){
+      res[i] = matrix(queue->store->data);
+      queue->store = queue->store->next;
+  }*/
+
   return 0;
 }
