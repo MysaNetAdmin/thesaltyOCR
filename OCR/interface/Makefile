@@ -7,11 +7,11 @@ CFLAGS= -Wall -Wextra -std=c99
 LDFLAGS=
 LDLIBS= `pkg-config --libs sdl gtk+-3.0`
  
-SRC= main.c
+SRC= interface.c
 OBJ= ${SRC:.c=.o}
 DEP= ${SRC:.c=.d}
  
-all: main
+all: interface
  
 main: ${OBJ}
  
