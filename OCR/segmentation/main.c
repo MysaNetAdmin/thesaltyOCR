@@ -188,13 +188,11 @@ struct queue* vertical(struct queue *kebab)
   while(!queue_is_empty(kebab))
   {
     SDL_Surface* img = queue_pop(kebab);
-    display_image(img);
     size_t width = img->w;
     size_t height = img->h;
     int boo = 0;
     size_t cpt;
     size_t frontline,backline;
-    display_image(img);
     for(size_t i = 0;i < width;i++){
       cpt = 0;
       for(size_t j = 0;j < height;j++){
@@ -222,102 +220,56 @@ struct queue* vertical(struct queue *kebab)
             putpixel(inter,k - frontline,l,pix);
           }
         }
-        display_image(inter);
         queue_push(queue,inter);
-        printf("width inter = %d",inter->w);
-        printf(" / height inter = %d\n",inter->h);
       }
     }
   }
+  free(kebab);
   return queue;
 }
-//create a new Surface which as been merged with the the two results of the two functions before
 
-SDL_Surface* merge(SDL_Surface *verti, SDL_Surface *hori){
 
-  size_t width = verti->w;
-  size_t height = verti->h;
-  for(size_t i = 0;i < width;i++){
-    for(size_t j = 0;j < height;j++){
-      Uint32 pix;
-      Uint32 pix_verti = getpixel(verti,i,j);
-      Uint32 pix_hori = getpixel(hori,i,j);
-
-      Uint8 r_verti,g_verti,b_verti;
-      Uint8 r_hori,g_hori,b_hori;
-
-      SDL_GetRGB(pix_verti,verti->format,&r_verti,&g_verti,&b_verti);
-      SDL_GetRGB(pix_hori,hori->format,&r_hori,&g_hori,&b_hori);
-      if(r_verti == 122 || r_hori == 122)
-      {
-        pix = SDL_MapRGB(verti -> format,122,122,122);
-        putpixel(verti,i,j,pix);
-      }
-    }
-  }
-  return verti;
-}
 //put in white each part which is not text
 SDL_Surface* text(SDL_Surface *img){
 
   return img;
 }
-//separate each character with segment
-/*SDL_Surface* grill(SDL_Surface *img){
 
-  size_t width = img->w;
-  size_t height = img->h;
-
-  size_t up ,down,left,right;
-  up = height;
-  down = 0;
-  right = 0;
-  left = width;
-
-  for(size_t i = 0; i < height - 1;i++){
-  for(size_t j = 0; j < width - 1;j++){
-
-  Uint32 pix = getpixel(img,j,i)
-  Uint8 r,g,b;
-  SDL_GetRGB(pix,ver->format,&r,&g,&b);
-  if(r == 0 || r == 122){
-  if(j < left) left = j;
-  if(j > right) right = j;
-  if(i < up) up = i;
-  if(i > down) down = i; 
-  }
-  if(r == 255){
-//u && n
-}
-
-}
-}
-
-return img;
-}*/
 
 //save each character in a 16x16 matrix 0 = white, 1 = black = letter
 
-SDL_Surface* compression(SDL_Surface* img){
+struct queue* fill(struct queue* queue){
 
-  size_t width = img->w;
-  size_t height = img->h;
-  SDL_Surface* res = img;
-  res->w = 16;
-  res->h = 16;
-  size_t w = width / 16;
-  size_t h = height / 16;
-  for(size_t i = 0;i < height;i++){
-    for(size_t j = 0;j < width;j++){
-      if(j % w == 0 && i % h == 0){
-        Uint32 pix = getpixel(img,j,i);
-        Uint8 r,g,b;
-        SDL_GetRGB(pix,img->format,&r,&g,&b);
-        pix = SDL_MapRGB(img->format,r,g,b);
-        putpixel(img,j,i,pix);
+  struct queue *res;
+  res = malloc(sizeof(struct queue));
+  res->store = NULL;
+  res->size = 0;
+  
+
+  while(!queue_is_empty(queue)){
+
+    SDL_Surface* tmp = queue_pop(queue);
+    size_t width = tmp->w;
+    size_t height = tmp->h;
+    
+    SDL_Surface* inter = SDL_CreateRGBSurface(0,16,16,32,0,0,0,0);
+
+    for(size_t i = 0;i < 16;i++){
+      for(size_t j = 0;j < 16;j++){
+        if(i < width && j < height){
+          Uint32 pix = getpixel(tmp,i,j);
+          putpixel(inter,i,j,pix);
+        }
+        else{
+          Uint32 pix = SDL_MapRGB(inter->format,255,255,255);
+          putpixel(inter,i,j,pix);
+        }
       }
     }
+
+    queue_push(res,inter);
   }
+  free(queue);
   return res;
 }
 
@@ -327,8 +279,8 @@ int** matrix (SDL_Surface* img){
   size_t height = img->h;
 
   int** res = malloc(sizeof *res *16);
-  for(int i = 0;i < 16;i++){
-    res[i] = malloc(sizeof **res * 16);
+  for(size_t k = 0;k < 16;k++){
+    res[k] = malloc(sizeof **res * 16);
   }
 
   for(size_t i = 0;i < height;i++){
@@ -349,10 +301,20 @@ int** matrix (SDL_Surface* img){
   return res;
 }
 
+void print_matrix(int** matrix){
+
+  for(int i = 0;i < 16;i++){
+    for(int j = 0;j < 16;j++){
+      printf("%d ",matrix[i][j]);
+    }
+    printf("\n");
+  }
+
+}
 
 int main(){
 
-  char *path = "syllabes-de-couleur.jpg";
+  char *path = "image_test_segmentation.png";
   SDL_Surface* ver = load_image(path);
   SDL_Surface* hor = load_image(path);
   size_t width = ver->w;
@@ -378,22 +340,23 @@ int main(){
     }
   }
   display_image(ver);
-  //SDL_Surface* hori_dis = display_image(hor);
-  //SDL_Surface* verti_dis = display_image(ver);
-  //SDL_Surface* merge_dis = display_image(ver);
-  struct queue *queue;
-  queue = vertical(horizon(hor));
-  //display_image(hori_dis);
-  //verti_dis = vertical(hori_dis);
-  //display_image(verti_dis);
-  //merge_dis = merge(verti_dis,hori_dis);
-  //display_image(merge_dis);
-  //int[queue->size] res;
 
-  /*for(size_t i = 0;i < queue->size;i++){
-      res[i] = matrix(queue->store->data);
-      queue->store = queue->store->next;
-  }*/
+  struct queue *final;
+  final = fill(vertical(horizon(hor)));
+  struct queue *res;
+  res = malloc(sizeof(struct queue));
+  res->store = NULL;
+  res->size = 0;
 
+  printf("%zu\n",res->size);
+  int i = 0;
+  int** inter;
+  while(!queue_is_empty(final)){
+      inter = matrix(queue_pop(final));
+      queue_push(res, inter);
+      print_matrix(inter);
+      printf("\n");
+    i++;
+  }
   return 0;
 }
