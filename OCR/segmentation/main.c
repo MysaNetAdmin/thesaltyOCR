@@ -320,6 +320,29 @@ SDL_Surface* compression(SDL_Surface* img){
   return res;
 }
 
+int[][] matrix(SDL_Surface* img){
+
+  size_t width = img->w;
+  size_t height = img->h;
+  int res[16][16];
+
+  for(int i = 0;i < height;i++){
+    for(int j = 0;j < width;j++){
+        Uint32 pix = getpixel(img,j,i);
+        Uint8 r,g,b;
+        SDL_GetRGB(img->format,&r,&g,&b);
+        if(r < 122){
+          res[i][j] = 1;
+        }
+        else{
+          res[i][j] = 0;
+        }
+    }
+  }
+  return res;
+}
+
+
 int main(){
 
   char *path = "syllabes-de-couleur.jpg";
