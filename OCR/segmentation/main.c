@@ -113,21 +113,6 @@ SDL_Surface* display_image(SDL_Surface *img) {
   return screen;
 }
 
-SDL_Surface* init_img(SDL_Surface *img){
-
-  SDL_Surface* res = SDL_CreateRGBSurface(0,img->w,img->h,32,255,255,255,255);
-  for(int i = 0; i < img->w; i++){
-    for(int j = 0; j < img->h; j++){
-      Uint32 pix = getpixel(img,i,j);
-      Uint8 r, g, b;
-      SDL_GetRGB(pix, img -> format, &r, &g, &b);
-      pix = SDL_MapRGB(img -> format, r, g, b);
-      putpixel(res,i,j,pix);
-    }
-  }
-
-  return res;
-}
 
 void trait_line(SDL_Surface *img)
 
@@ -193,9 +178,6 @@ void trait_line(SDL_Surface *img)
   display_image(img);
 }
 
-
-
-//undercircle the text in grey on horizontal and put everything which is not text in black
 
 struct queue* horizon(SDL_Surface *img){
 
@@ -302,7 +284,7 @@ SDL_Surface* text(SDL_Surface *img){
 }
 
 
-//save each character in a 16x16 matrix 0 = white, 1 = black = letter
+//fill each SDL element with white pixel until the size reach 16x16
 
 struct queue* fill(struct queue* queue){
 
@@ -338,6 +320,8 @@ struct queue* fill(struct queue* queue){
   free(queue);
   return res;
 }
+
+//return a double-dimension array fill with 0 and 1 (0 == white pixel and 1 == black pixel) 
 
 int** matrix (SDL_Surface* img){
 
@@ -375,7 +359,6 @@ void print_matrix(int** matrix){
     }
     printf("\n");
   }
-
 }
 
 int main(){
