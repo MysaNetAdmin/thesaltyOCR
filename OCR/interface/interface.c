@@ -5,6 +5,7 @@
 
 GtkBuilder    *builder;
 GtkWidget     *main_window;
+GtkWidget     *image;
 GtkWidget     *open, *bin, *xor, *save, *cancel;
 GtkWidget     *file_dialog;
 
@@ -20,11 +21,11 @@ static void close_dialog()
 
 static void save_clicked()
 {
-  char *filename;
-  GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-  filename = gtk_file_chooser_get_filename (chooser);
-  open_file (filename);
-  g_free (filename);  
+  const gchar *filename;
+  GtkFileChooser *chooser = gtk_file_chooser(file_dialog);
+  filename = gtk_file_chooser_get_filename(chooser);
+  gtk_image_set_from_file(image, filename);
+  close_dialog();
 }
 
 int main(int argc, char *argv[])
@@ -36,6 +37,7 @@ int main(int argc, char *argv[])
 
   main_window = GTK_WIDGET(gtk_builder_get_object(builder, "interface"));
   file_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "file_dialog"));
+  image = GTK_WIDGET(gtk_builder_get_object(builder, "image"));
   open = GTK_WIDGET(gtk_builder_get_object(builder, "open"));
   bin = GTK_WIDGET(gtk_builder_get_object(builder, "bin"));
   xor = GTK_WIDGET(gtk_builder_get_object(builder, "xor"));
