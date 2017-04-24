@@ -5,34 +5,53 @@
 
 GtkBuilder    *builder;
 GtkWidget     *main_window;
+GtkWidget     *open, *bin, *xor, *save, *cancel;
 GtkWidget     *file_dialog;
+
+static void chooser_dialog()
+{
+  gtk_widget_show(file_dialog);
+}
+
+static void close_dialog()
+{
+  gtk_widget_hide(file_dialog);
+}
+
+static void save_clicked()
+{
+  char *filename;
+  GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+  filename = gtk_file_chooser_get_filename (chooser);
+  open_file (filename);
+  g_free (filename);  
+}
 
 int main(int argc, char *argv[])
 {
-    gtk_init(&argc, &argv);
- 
-    builder = gtk_builder_new();
-    gtk_builder_add_from_file (builder, "interface.glade", NULL);
- 
-    main_window = GTK_WIDGET(gtk_builder_get_object(builder, "interface"));
-    file_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "file_dialog"));
-    gtk_builder_connect_signals(builder, NULL);
- 
-    g_object_unref(builder);
- 
-    gtk_widget_show(main_window); 
-    gtk_main();
- 
-    return 0;
-}
+  gtk_init(&argc, &argv);
 
-void file_chooser_dialog()
-{
-    gtk_widget_show(file_dialog);
-}
+  builder = gtk_builder_new();
+  gtk_builder_add_from_file (builder, "interface.glade", NULL);
+
+  main_window = GTK_WIDGET(gtk_builder_get_object(builder, "interface"));
+  file_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "file_dialog"));
+  open = GTK_WIDGET(gtk_builder_get_object(builder, "open"));
+  bin = GTK_WIDGET(gtk_builder_get_object(builder, "bin"));
+  xor = GTK_WIDGET(gtk_builder_get_object(builder, "xor"));
+  save = GTK_WIDGET(gtk_builder_get_object(builder, "save"));
+  cancel = GTK_WIDGET(gtk_builder_get_object(builder, "cancel"));
+
+  gtk_builder_connect_signals(builder, NULL);
+
+  g_signal_connect_swapped(open, "clicked", G_CALLBACK(chooser_dialog), NULL);
+  g_signal_connect_swapped(save, "clicked", G_CALLBACK(save_clicked), NULL);
+  g_signal_connect_swapped(cancel, "clicked", G_CALLBACK(close_dialog), NULL);
  
-// called when window is closed
-void on_main_window_destroy()
-{
-    gtk_main_quit();
+  g_object_unref(builder);
+ 
+  gtk_widget_show(main_window);
+  gtk_main();
+
+  return 0;
 }
