@@ -334,9 +334,12 @@ void print_matrix(int** matrix){
   }
 }
 
-int main(){
-
-  char *path = "syllabes-de-couleur.jpg";
+int main(int argc,char *argv[]){
+  
+  if(argc <= 1)
+    printf("you forget your image");
+  else{
+  char *path = argv[1];
   SDL_Surface* ver = load_image(path);
   SDL_Surface* hor = load_image(path);
   size_t width = ver->w;
@@ -363,8 +366,8 @@ int main(){
   }
   display_image(ver);
 
-  trait_line(ver);
-  /*struct queue *final;
+  //trait_line(ver);
+  struct queue *final;
   final = fill(vertical(horizon(hor)));
   struct queue *res;
   res = malloc(sizeof(struct queue));
@@ -380,6 +383,7 @@ int main(){
       print_matrix(inter);
       printf("\n");
     i++;
-  }*/
+  }
+}
   return 0;
 }
