@@ -120,8 +120,7 @@ void trait_line(SDL_Surface *img)
   size_t width = img->w;
   size_t height = img->h;
   int boo = 0;
-  size_t cpt,cpt2,left,right;
-  int track = 0;
+  size_t cpt;
   size_t frontline,backline;;
   for(size_t i = 0;i < height;i++){
     cpt = 0;
@@ -147,33 +146,7 @@ void trait_line(SDL_Surface *img)
         putpixel(img,k,backline ,pix);
       }
 
-      // on parcours l'interstice entre ces deux bandes
-      for(size_t k = 0;k < width;k++){
-        cpt2 = 0;
-        for(size_t q = frontline ;q < backline - 1;q++){
-
-          Uint32 pix = getpixel(img,q,k);
-          Uint8 r,g,b;
-          SDL_GetRGB(pix,img->format,&r,&g,&b);
-          if(r < 122 && !track) {
-            left = k - 1;
-            track = 1;
-          }
-          else if(r < 122 && track){
-            cpt2++;
-          }
-        }
-        if(track && cpt2 == 0){
-          right = k;
-          for(size_t x = frontline;x < backline - 1;x++){
-            Uint32 pix = SDL_MapRGB(img->format,0,0,0);
-            putpixel(img,x,left,pix);
-            putpixel(img,x,right,pix);
-          }
-          track = 0;
-        }
-      }
-    }
+   }
   }
   display_image(img);
 }
@@ -363,7 +336,7 @@ void print_matrix(int** matrix){
 
 int main(){
 
-  char *path = "image_test_segmentation.png";
+  char *path = "syllabes-de-couleur.jpg";
   SDL_Surface* ver = load_image(path);
   SDL_Surface* hor = load_image(path);
   size_t width = ver->w;
