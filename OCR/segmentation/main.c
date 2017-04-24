@@ -248,8 +248,13 @@ struct queue* vertical(struct queue *kebab)
   free(kebab);
   return queue;
 }
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> 173c8ee0340d2a5bd2865eab6590dae1d7f584dc
 //put in white each part which is not text
 SDL_Surface* text(SDL_Surface *img){
 
@@ -325,6 +330,7 @@ int** matrix (SDL_Surface* img){
 }
 
 void print_matrix(int** matrix){
+<<<<<<< HEAD
 
   for(int i = 0;i < 16;i++){
     for(int j = 0;j < 16;j++){
@@ -352,6 +358,23 @@ int main(int argc,char *argv[]){
   else{
   char *path = argv[1];
   int func = argv[2];
+=======
+
+  for(int i = 0;i < 16;i++){
+    for(int j = 0;j < 16;j++){
+      printf("%d ",matrix[i][j]);
+    }
+    printf("\n");
+  }
+}
+
+int main(int argc,char *argv[]){
+  
+  if(argc <= 1)
+    printf("you forget your image");
+  else{
+  char *path = argv[1];
+>>>>>>> 173c8ee0340d2a5bd2865eab6590dae1d7f584dc
   SDL_Surface* ver = load_image(path);
   size_t width = ver->w;
   size_t height = ver->h;
