@@ -334,20 +334,36 @@ void print_matrix(int** matrix){
   }
 }
 
-int main(int argc,char *argv[]){
+SDL_Surface* black_n_white(SDL_Surface* img){
   
+
+
+
+
+
+
+}
+
+int main(int argc,char *argv[]){
   if(argc <= 1)
     printf("you forget your image");
+  else if(argc <= 2)
+    printf("you forget the FUCKIMG FUNCTION TO CALL : \r 0 = basic image\r 1 = black and white\r 2 = show black lines between lines\r 3 = display lines of the image\r 4 = display letters of the image");
   else{
   char *path = argv[1];
+  int func = argv[2];
   SDL_Surface* ver = load_image(path);
-  SDL_Surface* hor = load_image(path);
   size_t width = ver->w;
   size_t height = ver->h;
-  printf("%zu\n",width);
-  printf("%zu\n",height);
-  SDL_Surface *displayed = display_image(ver);
-  SDL_FreeSurface(displayed);
+  switch(func){
+    case 0:
+      display_image(ver);
+      break;
+    case 1:
+      
+
+
+ SDL_FreeSurface(displayed);
   for(size_t i = 0; i < width; ++i){
     for(size_t j = 0; j < height; ++j){
 
@@ -361,7 +377,6 @@ int main(int argc,char *argv[]){
       b = r;
       pix = SDL_MapRGB(ver -> format,r,g,b);
       putpixel(ver,i,j,pix);
-      putpixel(hor,i,j,pix);
     }
   }
   display_image(ver);
