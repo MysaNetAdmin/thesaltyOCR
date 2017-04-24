@@ -129,6 +129,72 @@ SDL_Surface* init_img(SDL_Surface *img){
   return res;
 }
 
+void trait_line(SDL_Surface *img)
+
+{
+  size_t width = img->w;
+  size_t height = img->h;
+  int boo = 0;
+  size_t cpt,cpt2,left,right;
+  int track = 0;
+  size_t frontline,backline;;
+  for(size_t i = 0;i < height;i++){
+    cpt = 0;
+    for(size_t j = 0;j < width;j++){
+      Uint32 pix = getpixel(img,j,i);
+      Uint8 r,g,b;
+      SDL_GetRGB(pix, img->format, &r, &g, &b);
+
+      if(r < 122 && !boo){
+        frontline = i;
+        boo = 1;
+      }
+      else if(r < 122 && boo){
+        cpt++;
+      }
+    }
+    if(boo && cpt == 0){
+      backline = i;
+      boo = 0; 
+      for(size_t k = 0 ;k < width;k++){
+        Uint32 pix = SDL_MapRGB(img->format,0,0,0);
+        putpixel(img,k,frontline - 1,pix);
+        putpixel(img,k,backline ,pix);
+      }
+
+      // on parcours l'interstice entre ces deux bandes
+      for(size_t k = 0;k < width;k++){
+        cpt2 = 0;
+        for(size_t q = frontline ;q < backline - 1;q++){
+
+          Uint32 pix = getpixel(img,q,k);
+          Uint8 r,g,b;
+          SDL_GetRGB(pix,img->format,&r,&g,&b);
+          if(r < 122 && !track) {
+            left = k - 1;
+            track = 1;
+          }
+          else if(r < 122 && track){
+            cpt2++;
+          }
+        }
+        if(track && cpt2 == 0){
+          right = k;
+          for(size_t x = frontline;x < backline - 1;x++){
+            Uint32 pix = SDL_MapRGB(img->format,0,0,0);
+            putpixel(img,x,left,pix);
+            putpixel(img,x,right,pix);
+          }
+          track = 0;
+        }
+      }
+    }
+  }
+  display_image(img);
+}
+
+
+
 //undercircle the text in grey on horizontal and put everything which is not text in black
 
 struct queue* horizon(SDL_Surface *img){
@@ -341,7 +407,8 @@ int main(){
   }
   display_image(ver);
 
-  struct queue *final;
+  trait_line(ver);
+  /*struct queue *final;
   final = fill(vertical(horizon(hor)));
   struct queue *res;
   res = malloc(sizeof(struct queue));
@@ -357,6 +424,6 @@ int main(){
       print_matrix(inter);
       printf("\n");
     i++;
-  }
+  }*/
   return 0;
 }
