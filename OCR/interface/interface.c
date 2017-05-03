@@ -18,7 +18,7 @@ static void close_dialog()
 {
   gtk_widget_hide(file_dialog);
 }
-
+/*
 static void save_clicked()
 {
   const gchar *filename;
@@ -27,6 +27,7 @@ static void save_clicked()
   gtk_image_set_from_file(image, filename);
   close_dialog();
 }
+*/
 
 int main(int argc, char *argv[])
 {
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
   gtk_builder_connect_signals(builder, NULL);
 
   g_signal_connect_swapped(open, "clicked", G_CALLBACK(chooser_dialog), NULL);
-  g_signal_connect_swapped(save, "clicked", G_CALLBACK(save_clicked), NULL);
+  //g_signal_connect_swapped(save, "clicked", G_CALLBACK(save_clicked), NULL);
   g_signal_connect_swapped(cancel, "clicked", G_CALLBACK(close_dialog), NULL);
  
   g_object_unref(builder);
