@@ -408,7 +408,7 @@ SDL_Surface* black_n_white(SDL_Surface* img){
 }
 
 const char usage[] =
-"YOU FORGET THE FUNCTION TO CALL\n"
+"YOU FORGOT THE FUNCTION TO CALL\n"
 "\t\t0: black and white\n"
 "\t\t1: show black lines between lines\n"
 "\t\t2: display lines of the image\n"
@@ -417,7 +417,7 @@ const char usage[] =
 
 int main(int argc,char *argv[]){
 	if(argc <= 1)
-		printf("you forget your image\n");
+		printf("you forgot your image\n");
 	else if(argc <= 2)
 		errx(1, "%s", usage);
 	else{
