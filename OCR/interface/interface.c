@@ -5,7 +5,6 @@
 
 GtkBuilder    *builder;
 GtkWidget     *main_window;
-<<<<<<< HEAD
 GtkWidget     *image;
 GtkWidget     *open, *bin, *xor, *save, *cancel;
 GtkWidget     *file_dialog;
@@ -19,7 +18,7 @@ static void close_dialog()
 {
   gtk_widget_hide(file_dialog);
 }
-
+/*
 static void save_clicked()
 {
   const gchar *filename;
@@ -28,6 +27,7 @@ static void save_clicked()
   gtk_image_set_from_file(image, filename);
   close_dialog();
 }
+*/
 
 int main(int argc, char *argv[])
 {
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
   gtk_builder_connect_signals(builder, NULL);
 
   g_signal_connect_swapped(open, "clicked", G_CALLBACK(chooser_dialog), NULL);
-  g_signal_connect_swapped(save, "clicked", G_CALLBACK(save_clicked), NULL);
+  //g_signal_connect_swapped(save, "clicked", G_CALLBACK(save_clicked), NULL);
   g_signal_connect_swapped(cancel, "clicked", G_CALLBACK(close_dialog), NULL);
  
   g_object_unref(builder);
@@ -57,36 +57,4 @@ int main(int argc, char *argv[])
   gtk_main();
 
   return 0;
-=======
-GtkWidget     *file_dialog;
-
-int main(int argc, char *argv[])
-{
-    gtk_init(&argc, &argv);
- 
-    builder = gtk_builder_new();
-    gtk_builder_add_from_file (builder, "interface.glade", NULL);
- 
-    main_window = GTK_WIDGET(gtk_builder_get_object(builder, "interface"));
-    file_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "file_dialog"));
-    gtk_builder_connect_signals(builder, NULL);
- 
-    g_object_unref(builder);
- 
-    gtk_widget_show(main_window); 
-    gtk_main();
- 
-    return 0;
-}
-
-void file_chooser_dialog()
-{
-    gtk_widget_show(file_dialog);
-}
- 
-// called when window is closed
-void on_main_window_destroy()
-{
-    gtk_main_quit();
->>>>>>> 173c8ee0340d2a5bd2865eab6590dae1d7f584dc
 }

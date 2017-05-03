@@ -7,11 +7,8 @@
     <property name="title" translatable="yes">Choose an image</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
-<<<<<<< HEAD
     <property name="gravity">center</property>
     <property name="has_resize_grip">True</property>
-=======
->>>>>>> 173c8ee0340d2a5bd2865eab6590dae1d7f584dc
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
@@ -23,7 +20,6 @@
             <property name="homogeneous">True</property>
             <property name="layout_style">end</property>
             <child>
-<<<<<<< HEAD
               <object class="GtkButton" id="choose">
                 <property name="label" translatable="yes">Choose</property>
                 <property name="visible">True</property>
@@ -48,12 +44,6 @@
                 <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
-=======
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
->>>>>>> 173c8ee0340d2a5bd2865eab6590dae1d7f584dc
             </child>
           </object>
           <packing>
@@ -70,14 +60,11 @@
   </object>
   <object class="GtkWindow" id="interface">
     <property name="can_focus">False</property>
-<<<<<<< HEAD
     <property name="title" translatable="yes">The Salty OCR</property>
     <property name="window_position">center</property>
     <property name="type_hint">dialog</property>
     <property name="gravity">center</property>
     <property name="has_resize_grip">True</property>
-=======
->>>>>>> 173c8ee0340d2a5bd2865eab6590dae1d7f584dc
     <signal name="destroy" handler="gtk_main_quit" swapped="no"/>
     <child>
       <object class="GtkBox" id="c1">
@@ -116,11 +103,7 @@
             </child>
             <child>
               <object class="GtkButton" id="bin">
-<<<<<<< HEAD
                 <property name="label" translatable="yes">Segmentation</property>
-=======
-                <property name="label" translatable="yes">Binarisation</property>
->>>>>>> 173c8ee0340d2a5bd2865eab6590dae1d7f584dc
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -167,7 +150,7 @@
         </child>
       </object>
     </child>
-    <child type="titlebar">
+    <child>
       <placeholder/>
     </child>
   </object>
