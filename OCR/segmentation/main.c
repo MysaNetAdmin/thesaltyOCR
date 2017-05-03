@@ -412,7 +412,9 @@ const char usage[] =
 "\t\t0: black and white\n"
 "\t\t1: show black lines between lines\n"
 "\t\t2: display lines of the image\n"
-"\t\t3: display lines with black lines between letters\n";
+"\t\t3: display lines with black lines between letters\n"
+"\t\t4: display the matrix of char\n";
+
 
 
 int main(int argc,char *argv[]){
@@ -443,6 +445,14 @@ int main(int argc,char *argv[]){
 			case 3:
 				queue = trait_column(horizon(black_n_white(ver),0));
 				break;
+			case 4:
+				queue = vertical(horizon(black_n_white(ver),0));
+				while(!(queue_is_empty(queue)))
+				{
+					SDL_Surface* img = queue_pop(queue);
+					print_matrix(matrix(img));
+					printf("\n");
+				}
 		}
 
 		/*
