@@ -19,6 +19,7 @@ debug: CFLAGS+= -O0 -g
 debug: main
  
 clean:
+	rm -f *.o
 	rm -f ${OBJ} ${DEP}
 	rm -f main
  
