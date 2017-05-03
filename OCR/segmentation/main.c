@@ -377,10 +377,11 @@ int** matrix (SDL_Surface* img){
 }
 
 void print_matrix(int** matrix){
-
 	for(int i = 0;i < 16;i++){
 		for(int j = 0;j < 16;j++){
-			printf("%d ",matrix[i][j]);
+      if (matrix[i][j] == 1) printf("%c[1;31m%d ",27,matrix[i][j]);
+      else printf("%c[1;32m%d ", 27,matrix[i][j]); 
+        //printf("%d ",matrix[i][j]);
 		}
 		printf("\n");
 	}
