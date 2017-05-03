@@ -314,7 +314,7 @@ int** matrix (SDL_Surface* img){
         SDL_GetRGB(pix,img->format,&r,&g,&b);
 
         if(r < 122){
-          res[i][j] = 1;
+          res[i][j] = 7;
         }
         else{
           res[i][j] = 0;
