@@ -7,9 +7,7 @@
 //
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include "xor.h"
 
 #define Rand() ((double)rand()/((double)RAND_MAX+1))
 #define Pattern_num 4

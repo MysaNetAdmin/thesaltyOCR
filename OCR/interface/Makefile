@@ -16,10 +16,10 @@ all: interface
 main: ${OBJ}
  
 debug: CFLAGS+= -O0 -g
-debug: main
+debug: interface
  
 clean:
 	rm -f ${OBJ} ${DEP}
-	rm -f main
+	rm -f interface
  
 # END
