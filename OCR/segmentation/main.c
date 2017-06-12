@@ -311,27 +311,25 @@ SDL_Surface* text(SDL_Surface *img){
 
 //fill each SDL element with white pixel until the size reach 16x16
 
-struct queue* fill(struct queue* queue){
+int** fill(SDL_Surface* tmp){
 
-	struct queue *res;
-	res = malloc(sizeof(struct queue));
-	res->store = NULL;
-	res->size = 0;
-
-
-	while(!queue_is_empty(queue)){
-
-		SDL_Surface* tmp = queue_pop(queue);
 		size_t width = tmp->w;
 		size_t height = tmp->h;
 
-		SDL_Surface* inter = SDL_CreateRGBSurface(0,16,16,32,0,0,0,0);
-
-		for(size_t i = 0;i < 16;i++){
-			for(size_t j = 0;j < 16;j++){
+		int** res = malloc(sizeof *res * 16);
+    for(size_t k = 0;k < 16;k++){
+      res[k] = malloc(sizeof **res * 16);
+    }
+    size_t mati,matj = 0 , 0;
+		for(size_t i = 0;i < height;i++){
+			for(size_t j = 0;j < width;j++){
 				if(i < width && j < height){
-					Uint32 pix = getpixel(tmp,i,j);
-					putpixel(inter,i,j,pix);
+					Uint32 pix = getpixel(tmp,j,i);
+					Uint8 r,g,b;
+          SDL_GetRGB(pix,tmp->format,&r,&g,&b);
+          if(r < 122) res[mati][matj] =  1;
+          else  res[mati][matj] = 0;
+          matj++;
 				}
 				else{
 					Uint32 pix = SDL_MapRGB(inter->format,255,255,255);
@@ -339,11 +337,45 @@ struct queue* fill(struct queue* queue){
 				}
 			}
 		}
-
-		queue_push(res,inter);
 	}
-	free(queue);
 	return res;
+}
+
+int** resize(SDL_Surface* tmp){
+
+    size_t width = tmp->w;
+    size_t height = tmp->h;
+
+    size_t rapw = width / 16;
+    size_t raph = height / 16;
+    int boow = width < 32 && width > 16;
+    int booh = height < 32 && height > 16;
+    int** res = malloc(sizeof *res * 16);
+    for(size_t k = 0;k < 16;k++){
+      res[k] = malloc(sizeof **res * 16);
+    }
+  
+    size_t cptw = 0;
+    size_t cpth = 0;
+
+    for(size_t i = 0;i < height;i++){
+      if(cpth % raph == 0){
+        for(size_t j = 0;j < width;j++){
+          if(cptw % rapw == 0) {
+            Uint32 pix = getpixel(tmp,j,i);
+            Uint8 r,g,b;
+            SDL_GetRGB(pix,tmp->format,&r,&g,&b);
+
+            if(r < 122) res[i][j] = 1;
+            else  res[cpth][cptw] = 0;
+          }
+          cptw++;
+        }
+      }
+      cpth++;
+    }
+  }
+  return res;
 }
 
 //return a double-dimension array fill with 0 and 1 (0 == white pixel and 1 == black pixel) 
@@ -454,6 +486,14 @@ int main(int argc,char *argv[]){
 					print_matrix(matrix(img));
 					printf("\n");
 				}
+      case 5:
+        queue = vertical(horizon(black_n_white(ver),0));
+        while(!(queue_is_empty(queue)))
+        {
+          SDL_Surface* img = queue_pop(queue);
+          print_matrice(matrice(img));
+          printf("\n");
+        }
 		}
 
 		/*
