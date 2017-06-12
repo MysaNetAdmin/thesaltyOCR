@@ -6,20 +6,14 @@
 
 
 struct list{
-<<<<<<< HEAD
 				struct list *next;
 				void        *data;
-=======
-	struct list *next;
-	void        *data;
->>>>>>> 099f24f4c3d49ba205cb4d287aa247ecdf18e1d2
 };
 
 /*
  * queue container: replace sentinel and add abstraction
  */
 struct queue {
-<<<<<<< HEAD
 				struct list *store;
 				size_t       size;
 };
@@ -35,7 +29,6 @@ void queue_init(struct queue *queue){
 void queue_init(struct queue *queue){
 	queue->size = 0;
 	queue->store = NULL;
->>>>>>> 099f24f4c3d49ba205cb4d287aa247ecdf18e1d2
 }
 
 /*
@@ -43,19 +36,11 @@ void queue_init(struct queue *queue){
  */
 int queue_is_empty(struct queue *queue) {
 
-<<<<<<< HEAD
 				if (queue->size == 0) {
 								return (1);
 				} else {
 								return (0);
 				}
-=======
-	if (queue->size == 0) {
-		return (1);
-	} else {
-		return (0);
-	}
->>>>>>> 099f24f4c3d49ba205cb4d287aa247ecdf18e1d2
 }
 
 /*
@@ -63,7 +48,6 @@ int queue_is_empty(struct queue *queue) {
  */
 void queue_push(struct queue *queue, void *elm) {
 
-<<<<<<< HEAD
 				struct list* node = malloc(sizeof (struct list));
 				node->next = (queue_is_empty(queue) ? node : queue->store->next);
 				node->data = elm;
@@ -73,17 +57,6 @@ void queue_push(struct queue *queue, void *elm) {
 				}
 				queue->store = node;
 				queue->size += 1;
-=======
-	struct list* node = malloc(sizeof (struct list));
-	node->next = (queue_is_empty(queue) ? node : queue->store->next);
-	node->data = elm;
-
-	if (!queue_is_empty(queue)) {
-		queue->store->next = node;
-	}
-	queue->store = node;
-	queue->size += 1;
->>>>>>> 099f24f4c3d49ba205cb4d287aa247ecdf18e1d2
 }
 
 
@@ -95,7 +68,6 @@ void queue_push(struct queue *queue, void *elm) {
  */
 void* queue_pop(struct queue *queue) {
 
-<<<<<<< HEAD
 				if (queue_is_empty(queue)) {
 								return (NULL);
 				} else {
@@ -106,18 +78,6 @@ void* queue_pop(struct queue *queue) {
 								queue->size -= 1;
 								return (elm);
 				}
-=======
-	if (queue_is_empty(queue)) {
-		return (NULL);
-	} else {
-		struct list* tmp = queue->store->next;
-		queue->store->next = queue->store->next->next;
-		void* elm = tmp->data;
-		//free(tmp);
-		queue->size -= 1;
-		return (elm);
-	}
->>>>>>> 099f24f4c3d49ba205cb4d287aa247ecdf18e1d2
 }
 
 
@@ -132,22 +92,10 @@ void wait_for_keypressed(void){
 												default: break;
 								}
 				}
-=======
-	SDL_Event             event;
-	for(;;){
-		SDL_PollEvent( &event );
-		switch (event.type){
-
-			case SDL_KEYDOWN: return;
-			default: break;
-		}
-	}
->>>>>>> 099f24f4c3d49ba205cb4d287aa247ecdf18e1d2
 }
 
 
 SDL_Surface* init_SDL(size_t height, size_t width) {
-<<<<<<< HEAD
 				SDL_Surface *img = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
 				for(size_t i = 0; i < height; i++){
 								for(size_t j = 0; j < width; j++){
@@ -156,21 +104,10 @@ SDL_Surface* init_SDL(size_t height, size_t width) {
 								}
 				}
 				return img;
-=======
-	SDL_Surface *img = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
-	for(size_t i = 0; i < height; i++){
-		for(size_t j = 0; j < width; j++){
-			Uint32 pix = SDL_MapRGB(img -> format,0,0,0);
-			putpixel(img,j,i,pix);
-		}
-	}
-	return img;
->>>>>>> 099f24f4c3d49ba205cb4d287aa247ecdf18e1d2
 
 }
 
 SDL_Surface* load_image(char *path){
-<<<<<<< HEAD
 				SDL_Surface           *img;
 				img = IMG_Load(path);
 				if (!img) errx(3, "can't load %s: %s", path, IMG_GetError());
@@ -193,37 +130,13 @@ SDL_Surface* display_image(SDL_Surface *img) {
 				wait_for_keypressed();
 
 				return screen;
-=======
-	SDL_Surface           *img;
-	img = IMG_Load(path);
-	if (!img) errx(3, "can't load %s: %s", path, IMG_GetError());
-	return img;
-}
-
-SDL_Surface* display_image(SDL_Surface *img) {
-	SDL_Surface             *screen;
-
-	screen = SDL_SetVideoMode(img->w, img->h, 0, SDL_SWSURFACE|SDL_ANYFORMAT);
-	if(screen == NULL) {
-		errx(1, "Couldn't  set %dx%d video mode: %s\n",
-				img->w, img->h, SDL_GetError());
-	}
-
-	if(SDL_BlitSurface(img, NULL, screen, NULL) < 0)
-		warnx("BlitSurface error: %s\n", SDL_GetError());
-
-	SDL_UpdateRect(screen, 0, 0, img->w, img->h);
-	wait_for_keypressed();
-
-	return screen;
->>>>>>> 099f24f4c3d49ba205cb4d287aa247ecdf18e1d2
+				
 }
 
 
 void trait_line(SDL_Surface *img)
 
 {
-<<<<<<< HEAD
 				size_t width = img->w;
 				size_t height = img->h;
 				int boo = 0;
@@ -345,7 +258,7 @@ struct queue* horizon(SDL_Surface *img, int print){
 								}
 				}
 				return queue;
-=======
+
 	size_t width = img->w;
 	size_t height = img->h;
 	int boo = 0;
