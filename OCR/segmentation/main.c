@@ -340,6 +340,7 @@ int** resize(SDL_Surface* tmp){
   //printf("%zu , %zu\n",width , height);
   size_t rapw = width / 16;
   size_t raph = height / 16;
+
   int** res = malloc(sizeof *res * 16);
   for(size_t k = 0;k < 16;k++){
     res[k] = malloc(sizeof **res * 16);
@@ -366,7 +367,7 @@ int** resize(SDL_Surface* tmp){
       raph++; 
     }
   }
-return res;
+  return res;
 }
 
 //return a double-dimension array fill with 0 and 1 (0 == white pixel and 1 == black pixel) 
@@ -375,12 +376,12 @@ int** matrix (SDL_Surface* img){
 
   size_t width = img->w;
   size_t height = img->h;
-
+  
   int** res;
 
   if(width > 16 || height > 16) res = resize(img);
   else  res = fill(img);
-  return res;
+  return res; 
 }
 
 void print_matrix(int** matrix){
