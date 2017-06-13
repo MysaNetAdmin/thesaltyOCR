@@ -47,7 +47,7 @@
             </child>
             <child>
               <object class="GtkButton" id="bin">
-                <property name="label" translatable="yes">Segmentation</property>
+                <property name="label" translatable="yes">Noir et blanc</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

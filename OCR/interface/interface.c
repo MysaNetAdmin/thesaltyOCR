@@ -2,54 +2,86 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <gtk/gtk.h>
+//#include "pixel_operations.h"
+//#include "main.c"
 
 GtkBuilder    *builder;
 GtkWidget     *main_window;
 GtkWidget     *image;
-GtkWidget     *open, *bin, *xor, *save, *cancel;
-GtkWidget     *file_dialog;
+GtkWidget     *open, *bin, *xor, *pWindow;
 
 static void chooser_dialog()
 {
-  gtk_widget_show(file_dialog);
+  gtk_widget_show(pWindow);
+  gtk_window_set_modal(GTK_WINDOW(pWindow), TRUE);
 }
 
-static void close_dialog()
+void on_activate_entry(GtkWidget *pEntry, gpointer data)
 {
-  gtk_widget_hide(file_dialog);
+    const gchar *sText;
+ 
+    sText = gtk_entry_get_text(GTK_ENTRY(pEntry));
+
+    gtk_label_set_text(GTK_LABEL((GtkWidget*)data), sText);
+    gtk_image_set_from_file(GTK_IMAGE(image), sText);
 }
-/*
-static void save_clicked()
+
+void on_copier_button(GtkWidget *pButton, gpointer data)
 {
-  const gchar *filename;
-  GtkFileChooser *chooser = gtk_file_chooser(file_dialog);
-  filename = gtk_file_chooser_get_filename(chooser);
-  gtk_image_set_from_file(image, filename);
-  close_dialog();
+    GtkWidget *pTempEntry;
+    GtkWidget *pTempLabel;
+    GList *pList;
+    const gchar *sText;
+ 
+    pList = gtk_container_get_children(GTK_CONTAINER((GtkWidget*)data));
+ 
+    pTempEntry = GTK_WIDGET(pList->data);
+ 
+    pList = g_list_next(pList);
+ 
+    pList = g_list_next(pList);
+
+    pTempLabel = GTK_WIDGET(pList->data);
+ 
+    sText = gtk_entry_get_text(GTK_ENTRY(pTempEntry));
+ 
+    gtk_label_set_text(GTK_LABEL(pTempLabel), sText);
+    gtk_image_set_from_file(GTK_IMAGE(image), sText);
+ 
+    g_list_free(pList);
+    gtk_widget_destroy(pWindow);
 }
-*/
 
 int main(int argc, char *argv[])
-{
+{ 
+  GtkWidget *pVBox;
+  GtkWidget *pEntry;
+  GtkWidget *pButton;
+  GtkWidget *pLabel;
+
   gtk_init(&argc, &argv);
 
   builder = gtk_builder_new();
   gtk_builder_add_from_file (builder, "interface.glade", NULL);
 
   main_window = GTK_WIDGET(gtk_builder_get_object(builder, "interface"));
-  file_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "file_dialog"));
   image = GTK_WIDGET(gtk_builder_get_object(builder, "image"));
   open = GTK_WIDGET(gtk_builder_get_object(builder, "open"));
   bin = GTK_WIDGET(gtk_builder_get_object(builder, "bin"));
   xor = GTK_WIDGET(gtk_builder_get_object(builder, "xor"));
-  save = GTK_WIDGET(gtk_builder_get_object(builder, "save"));
-  cancel = GTK_WIDGET(gtk_builder_get_object(builder, "cancel"));
+  pWindow = GTK_WIDGET(gtk_builder_get_object(builder, "pWindow"));
+  pVBox = GTK_WIDGET(gtk_builder_get_object(builder, "pVBox"));
+  pEntry = GTK_WIDGET(gtk_builder_get_object(builder, "pEntry")); 
+  pButton= GTK_WIDGET(gtk_builder_get_object(builder, "pButton"));
+  pLabel = GTK_WIDGET(gtk_builder_get_object(builder, "pLabel"));
 
   gtk_builder_connect_signals(builder, NULL);
 
   g_signal_connect_swapped(open, "clicked", G_CALLBACK(chooser_dialog), NULL);
-  //g_signal_connect_swapped(save, "clicked", G_CALLBACK(save_clicked), NULL);
-  g_signal_connect_swapped(cancel, "clicked", G_CALLBACK(close_dialog), NULL);
+
+  g_signal_connect(G_OBJECT(pEntry), "activate", G_CALLBACK(on_activate_entry), (GtkWidget*) pLabel);
+ 
+  g_signal_connect(G_OBJECT(pButton), "clicked", G_CALLBACK(on_copier_button), (GtkWidget*) pVBox);
  
   g_object_unref(builder);
  
