@@ -2,13 +2,14 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <gtk/gtk.h>
-//#include "pixel_operations.h"
-//#include "main.c"
+#include "pixel_operations.h"
+#include "main.c"
 
 GtkBuilder    *builder;
 GtkWidget     *main_window;
 GtkWidget     *image;
 GtkWidget     *open, *bin, *xor, *pWindow;
+const gchar *sText;
 
 static void chooser_dialog()
 {
@@ -18,7 +19,7 @@ static void chooser_dialog()
 
 void on_activate_entry(GtkWidget *pEntry, gpointer data)
 {
-    const gchar *sText;
+//    const gchar *sText;
  
     sText = gtk_entry_get_text(GTK_ENTRY(pEntry));
 
@@ -31,7 +32,7 @@ void on_copier_button(GtkWidget *pButton, gpointer data)
     GtkWidget *pTempEntry;
     GtkWidget *pTempLabel;
     GList *pList;
-    const gchar *sText;
+    //const gchar *sText;
  
     pList = gtk_container_get_children(GTK_CONTAINER((GtkWidget*)data));
  
@@ -50,6 +51,12 @@ void on_copier_button(GtkWidget *pButton, gpointer data)
  
     g_list_free(pList);
     gtk_widget_destroy(pWindow);
+}
+
+void black_white()
+{
+  SDL_Surface *img = load_image((char*)(sText));
+  display_black_n_white(img);
 }
 
 int main(int argc, char *argv[])
@@ -78,6 +85,8 @@ int main(int argc, char *argv[])
   gtk_builder_connect_signals(builder, NULL);
 
   g_signal_connect_swapped(open, "clicked", G_CALLBACK(chooser_dialog), NULL);
+
+  g_signal_connect_swapped(bin, "clicked", G_CALLBACK(black_white), NULL);
 
   g_signal_connect(G_OBJECT(pEntry), "activate", G_CALLBACK(on_activate_entry), (GtkWidget*) pLabel);
  
