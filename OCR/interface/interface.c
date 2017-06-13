@@ -18,9 +18,7 @@ static void chooser_dialog()
 }
 
 void on_activate_entry(GtkWidget *pEntry, gpointer data)
-{
-//    const gchar *sText;
- 
+{ 
     sText = gtk_entry_get_text(GTK_ENTRY(pEntry));
 
     gtk_label_set_text(GTK_LABEL((GtkWidget*)data), sText);
@@ -32,7 +30,8 @@ void on_copier_button(GtkWidget *pButton, gpointer data)
     GtkWidget *pTempEntry;
     GtkWidget *pTempLabel;
     GList *pList;
-    //const gchar *sText;
+    
+    gtk_button_set_label(GTK_BUTTON(pButton), "Ouvrir l'image");
  
     pList = gtk_container_get_children(GTK_CONTAINER((GtkWidget*)data));
  
@@ -50,7 +49,7 @@ void on_copier_button(GtkWidget *pButton, gpointer data)
     gtk_image_set_from_file(GTK_IMAGE(image), sText);
  
     g_list_free(pList);
-    gtk_widget_destroy(pWindow);
+    gtk_widget_hide(pWindow);
 }
 
 void black_white()
