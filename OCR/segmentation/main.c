@@ -416,75 +416,33 @@ SDL_Surface* black_n_white(SDL_Surface* img){
   return img;
 }
 
-const char usage[] =
-"YOU FORGOT THE FUNCTION TO CALL\n"
-"\t\t0: black and white\n"
-"\t\t1: show black lines between lines\n"
-"\t\t2: display lines of the image\n"
-"\t\t3: display lines with black lines between letters\n"
-"\t\t4: display the matrix of char\n";
+/* FONCTIONS A UTILISER */
 
+void display_black_n_white(SDL_Surface *img)
+{
+  SDL_Surface* ver = black_n_white(img);
+	display_image(ver);
+}
 
+void display_line(SDL_Surface *img)
+{
+  trait_line(black_n_white(img));
+}
 
-int main(int argc,char *argv[]){
-  if(argc <= 1)
-    printf("you forgot your image\n");
-  else if(argc <= 2)
-    errx(1, "%s", usage);
-  else{
-    char *path = argv[1];
-    unsigned int f = strtoul(argv[2], NULL, 20);
-    SDL_Surface* ver = load_image(path);
-    display_image(ver);
-    //size_t width = ver->w;
-    //size_t height = ver->h;
-    struct queue* queue = malloc(sizeof(struct queue));
-    switch(f){
-      case 0:
-        ver = black_n_white(ver);
-        display_image(ver);
-        break;
-      case 1:
-        trait_line(black_n_white(ver));
-        break;
-      case 2:
-        queue = horizon(black_n_white(ver),1);
-        free(queue);
-        break;
-      case 3:
-        queue = trait_column(horizon(black_n_white(ver),0));
-        break;
-      case 4:
-        queue = vertical(horizon(black_n_white(ver),0));
-        while(!(queue_is_empty(queue)))
-        {
-          printf("oui\n");
-          SDL_Surface* img = queue_pop(queue);
-          print_matrix(matrix(img));
-          printf("\n");
-        }     
-    }
+void display_column(SDL_Surface *img)
+{
+	struct queue* queue = trait_column(horizon(black_n_white(img),0));
+	free(queue);
+}
 
-    /*
-
-    //trait_line(ver);
-    struct queue *final;
-    final = fill(vertical(horizon(hor)));
-    struct queue *res;
-    res = malloc(sizeof(struct queue));
-    res->store = NULL;
-    res->size = 0;
-
-    printf("%zu\n",res->size);
-    int i = 0;
-    int** inter;
-    while(!queue_is_empty(final)){
-    inter = matrix(queue_pop(final));
-    queue_push(res, inter);
-    print_matrix(inter);
+void display_mat(SDL_Surface *img)
+{
+	struct queue* queue = vertical(horizon(black_n_white(img),0));
+  while(!(queue_is_empty(queue)))
+  {
+		printf("oui\n");
+    SDL_Surface* img2 = queue_pop(queue);
+    print_matrix(matrix(img2));
     printf("\n");
-    i++;
-    }*/
-  }
-  return 0;
+  } 
 }
