@@ -313,13 +313,12 @@ SDL_Surface* text(SDL_Surface *img){
 
 int** fill(SDL_Surface* tmp){
 
+  int** res = malloc(sizeof(int) * 16);
+  for(size_t k = 0;k < 16;k++){
+    res[k] = malloc(sizeof(int) * 16);
+  }
   size_t width = tmp->w;
   size_t height = tmp->h;
-
-  int** res = malloc(sizeof *res * 16);
-  for(size_t k = 0;k < 16;k++){
-    res[k] = malloc(sizeof **res * 16);
-  }
 
   for(size_t i = 0;i < height;i++){
     for(size_t j = 0;j < width;j++){
@@ -333,38 +332,37 @@ int** fill(SDL_Surface* tmp){
   return res;
 }
 
-int** resize(SDL_Surface* tmp){
-
-  size_t width = tmp->w;
+SDL_Surface* resize(SDL_Surface* tmp){
+  
+  SDL_Surface* res = init_SDL(16,16);
   size_t height = tmp->h;
-  //printf("%zu , %zu\n",width , height);
-  size_t rapw = width / 16;
-  size_t raph = height / 16;
+  size_t width = tmp->w;
+  
+  size_t x,y;
 
-  int** res = malloc(sizeof *res * 16);
-  for(size_t k = 0;k < 16;k++){
-    res[k] = malloc(sizeof **res * 16);
-  }
+  Uint8 A,B,C,grey;
 
-  for(size_t i = 0;i < height;i++){
-    if(i % raph == 0){
-      for(size_t j = 0;j < width;j++){
-        if(j % rapw == 0) {
-          //printf("%zu\n",j);
-          Uint32 pix = getpixel(tmp,j,i);
-          Uint8 r,g,b;
-          SDL_GetRGB(pix,tmp->format,&r,&g,&b);
-          printf("%d",r);
-          if(r < 122) {
-            res[i % raph][j % rapw] = 1;
-          }
-          else {
-            res[i % raph][j % rapw] = 0;
-          }
-          rapw++;
-        }
-      }
-      raph++; 
+  float x_ratio = ((float)(width - 1))/16;
+  float y_ratio = ((float)(height-1))/16;
+  float x_diff,y_diff;
+  size_t offset = 0;
+  for(size_t i = 0;i < 16;i++){
+    for(size_t j = 0; j < 16;j++){
+      x = (size_t)(x_ratio * j);
+      y = (size_t)(y_ratio * i);
+      x_diff = (x_ratio * j) - x;
+      y_diff = (y_ratio * i) - y;
+      
+
+      A = getpixel(tmp,x,y) & 0xff;
+      B = getpixel(tmp,x,y + 1) & 0xff;
+      C = getpixel(tmp,x,y + width) & 0xff;
+
+      if(A + B + C < 255) grey = 0;
+      else  grey = 255;
+
+      Uint32 pix = SDL_MapRGB(tmp->format,grey,grey,grey);
+      putpixel(res,offset++,y,pix);
     }
   }
   return res;
@@ -379,8 +377,29 @@ int** matrix (SDL_Surface* img){
   
   int** res;
 
-  if(width > 16 || height > 16) res = resize(img);
-  else  res = fill(img);
+  if(width > 16 || height > 16){
+
+    res = malloc(sizeof *res * 16);
+    for(size_t k = 0; k < 16; k++){
+      res[k] = malloc(sizeof(**res * 16));
+    }
+
+    img = resize(img);
+    for(size_t i = 0; i < height;i++){
+      for(size_t j = 0; j < width;j++){
+        Uint32 pix = getpixel(img,j,i);
+        Uint8 r,g,b;
+        SDL_GetRGB(pix,img->format,&r,&g,&b);
+        if(r < 127) res[i][j] = 1;
+        else  res[i][j] = 0;
+      }
+    }
+    return res;
+  }
+  
+  else  {
+    res = fill(img);
+  }
   return res; 
 }
 
