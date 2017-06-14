@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <gtk/gtk.h>
-#include "pixel_operations.c"
-#include "main.c"
+#include "../segmentation/pixel_operations.c"
+#include "../segmentation/main.c"
 
 GtkBuilder    *builder;
 GtkWidget     *main_window;
