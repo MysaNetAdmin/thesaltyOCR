@@ -2,14 +2,12 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <gtk/gtk.h>
-//#include "../segmentation/pixel_operations.c"
-//#include "../segmentation/main.c"
 
 GtkBuilder    *builder;
 GtkWidget     *main_window;
 GtkWidget     *image;
-GtkWidget     *open, *bin, *xor, *pWindow;
-const gchar *sText;
+GtkWidget     *open, *open2, *bin, *xor, *pWindow;
+const gchar *sText = "OCRLogo.png";
 
 static void chooser_dialog()
 {
@@ -46,7 +44,8 @@ void on_copier_button(GtkWidget *pButton, gpointer data)
     sText = gtk_entry_get_text(GTK_ENTRY(pTempEntry));
  
     gtk_label_set_text(GTK_LABEL(pTempLabel), sText);
-    gtk_image_set_from_file(GTK_IMAGE(image), sText); 
+    gtk_image_set_from_file(GTK_IMAGE(image), sText);
+    gtk_window_set_position(GTK_WINDOW(main_window), GTK_WIN_POS_CENTER);
     g_list_free(pList);
     gtk_widget_hide(pWindow);
 }
@@ -77,6 +76,7 @@ int main(int argc, char *argv[])
   main_window = GTK_WIDGET(gtk_builder_get_object(builder, "interface"));
   image = GTK_WIDGET(gtk_builder_get_object(builder, "image"));
   open = GTK_WIDGET(gtk_builder_get_object(builder, "open"));
+  open2 = GTK_WIDGET(gtk_builder_get_object(builder, "open2"));
   bin = GTK_WIDGET(gtk_builder_get_object(builder, "bin"));
   xor = GTK_WIDGET(gtk_builder_get_object(builder, "xor"));
   pWindow = GTK_WIDGET(gtk_builder_get_object(builder, "pWindow"));
@@ -88,6 +88,8 @@ int main(int argc, char *argv[])
   gtk_builder_connect_signals(builder, NULL);
 
   g_signal_connect_swapped(open, "clicked", G_CALLBACK(chooser_dialog), NULL);
+
+  g_signal_connect_swapped(open2, "button-press-event", G_CALLBACK(chooser_dialog), NULL);
 
   g_signal_connect_swapped(bin, "clicked", G_CALLBACK(black_white), NULL);
 
