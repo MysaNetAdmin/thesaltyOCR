@@ -10,7 +10,6 @@ GtkWidget     *main_window;
 GtkWidget     *image;
 GtkWidget     *open, *bin, *xor, *pWindow;
 const gchar *sText;
-char img_name[500] = "";
 
 static void chooser_dialog()
 {
@@ -47,9 +46,7 @@ void on_copier_button(GtkWidget *pButton, gpointer data)
     sText = gtk_entry_get_text(GTK_ENTRY(pTempEntry));
  
     gtk_label_set_text(GTK_LABEL(pTempLabel), sText);
-    gtk_image_set_from_file(GTK_IMAGE(image), sText);
-    img_name[500] = (char)(sText);
- 
+    gtk_image_set_from_file(GTK_IMAGE(image), sText); 
     g_list_free(pList);
     gtk_widget_hide(pWindow);
 }
@@ -58,6 +55,11 @@ void black_white()
 {
   //SDL_Surface *img = load_image((char*)(sText));
   //display_black_n_white(img);
+  char func[500] = "./main ";
+  strcat(func, sText);
+  char numb[500] = " 4";
+  strcat(func, numb);
+  (void)system(func);
 }
 
 int main(int argc, char *argv[])
