@@ -130,7 +130,7 @@ void trait_line(SDL_Surface *img)
   size_t width = img->w;
   size_t height = img->h;
   int boo = 0;
-  size_t cpt;
+ size_t cpt;
   size_t frontline,backline;
   for(size_t i = 0;i < height;i++){
     cpt = 0;
@@ -445,4 +445,43 @@ void display_mat(SDL_Surface *img)
     print_matrix(matrix(img2));
     printf("\n");
   } 
+}
+
+
+const char usage[] =
+"YOU FORGET THE FUNCTION TO CALL\n"
+"\t\t0: black and white\n"
+"\t\t1: show black lines between lines\n"
+"\t\t2: display lines of the image\n"
+"\t\t3: display lines with black lines between letters\n"
+"\t\t4: display the matrix of char\n";
+
+int main(int argc,char *argv[]){
+	if(argc <= 1)
+		printf("you forget your image\n");
+	else if(argc <= 2)
+		errx(1, "%s", usage);
+	else{
+		char *path = argv[1];
+		unsigned int f = strtoul(argv[2], NULL, 20);
+		SDL_Surface* ver = load_image(path);
+		//display_image(ver);
+		//size_t width = ver->w;
+		//size_t height = ver->h;
+		switch(f){
+			case 0:
+				display_black_n_white(ver);
+				break;
+			case 1:
+				display_line(ver);
+				break;
+			case 2:
+				display_column(ver);
+				break;
+			case 3:
+				display_mat(ver);
+				break;
+		}
+	}
+	return 0;
 }
