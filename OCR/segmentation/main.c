@@ -386,7 +386,21 @@ int** resize(SDL_Surface* tmp){
   return resf;
 }
 
-int** matrix (SDL_Surface* img)
+int* convert_to_adj(int** test)
+{
+		int* inter = malloc(sizeof(int)*16*16);
+		for(size_t i = 0; i < 16; i++)
+		{
+			for(size_t j = 0; j < 16; j++)
+			{
+				inter[i*16 + j] = test[i][j];
+			}
+		}
+		free(test);
+		return inter;
+}
+
+int* matrix (SDL_Surface* img)
 {
 	size_t width = img->w;
 	size_t height = img->h;
@@ -399,10 +413,10 @@ int** matrix (SDL_Surface* img)
 	else{
 		res = fill(img);
 	}
-	return res;
+	return convert_to_adj(res);
 }
 
-int clean_matrix(int** mat)
+int clean_matrix(int* mat)
 {
 				
 				int null = 1;
@@ -410,7 +424,7 @@ int clean_matrix(int** mat)
 				{
 								for(size_t j = 0; j < 16; j++)
 								{
-												if(mat[i][j] == 1)
+												if(mat[i*16 + j] == 1)
 																null = 0;
 								}
 				}
@@ -418,13 +432,13 @@ int clean_matrix(int** mat)
 				return null;
 }
 
-void print_matrix(int** matrix){
+void print_matrix(int* matrix){
 				if(!clean_matrix(matrix))
 				{
 					for(int i = 0;i < 16;i++){
 								for(int j = 0;j < 16;j++){
-												if (matrix[i][j] == 1) printf("%c[1;31m%d ",27,matrix[i][j]);
-												else printf("%c[1;32m%d ", 27,matrix[i][j]); 
+												if (matrix[i*16 + j] == 1) printf("%c[1;31m%d ",27,matrix[i*16 + j]);
+												else printf("%c[1;32m%d ", 27,matrix[i*16 + j]); 
 												//printf("%d ",matrix[i][j]);
 								}
 								printf("\n");
@@ -491,6 +505,7 @@ const char usage[] =
 "\t\t2: display lines of the image\n"
 "\t\t3: display lines with black lines between letters\n"
 "\t\t4: display the matrix of char\n";
+
 
 int main(int argc,char *argv[]){
 				if(argc <= 1)
