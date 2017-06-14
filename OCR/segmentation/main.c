@@ -200,6 +200,7 @@ struct queue* trait_column(struct queue* queue){
     display_image(img);
     //queue_push(res,img);
   }
+	free(queue);
   return res;
 }
 struct queue* horizon(SDL_Surface *img, int print){
@@ -393,10 +394,12 @@ int* convert_to_adj(int** test)
   {
     for(size_t j = 0; j < 16; j++)
     {
-      inter[i*16 + j] = test[i][j];
+      if(test[i][j] == 0)
+				inter[i*16 + j] = 0;
+			else
+				inter[i*16 + j] = 1;
     }
   }
-  free(test);
   return inter;
 }
 
@@ -418,7 +421,6 @@ int* matrix (SDL_Surface* img)
 
 int clean_matrix(int* mat)
 {
-
   int null = 1;
   for(size_t i = 0; i < 16; i++)
   {
@@ -486,13 +488,27 @@ void display_column(SDL_Surface *img)
   free(queue);
 }
 
-void display_mat(SDL_Surface *img)
+struct queue* SDL_to_mat(SDL_Surface *img)
 {
-  struct queue* queue = vertical(horizon(black_n_white(img),0));
+	struct queue* res = malloc(sizeof(struct queue));
+	queue_init(res);
+	struct queue* queue = vertical(horizon(black_n_white(img),0));
   while(!(queue_is_empty(queue)))
   {
     SDL_Surface* img2 = queue_pop(queue);
-    print_matrix(matrix(img2));
+    queue_push(res,matrix(img2));
+	}
+	free(queue);
+	return res;
+}
+
+void display_mat(SDL_Surface *img)
+{
+	struct queue* queue = SDL_to_mat(img);
+  while(!(queue_is_empty(queue)))
+  {
+		int* tmp = queue_pop(queue);
+    print_matrix(tmp);
     printf("\n");
   }
 }
