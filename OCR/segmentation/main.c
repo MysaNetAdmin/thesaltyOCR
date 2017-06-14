@@ -344,9 +344,9 @@ int** resize(SDL_Surface* tmp){
 
   Uint8 A,B,C,grey;
 
-  float x_ratio = ((float)(width - 1))/16;
-  float y_ratio = ((float)(height-1))/16;
-  float x_diff,y_diff;
+  int x_ratio = ((int)(width - 1))/16;
+  int y_ratio = ((int)(height-1))/16;
+  int x_diff,y_diff;
   size_t offset = 0;
   for(size_t i = 0;i < 16;i++){
     for(size_t j = 0; j < 16;j++){
