@@ -389,7 +389,7 @@ int** resize(SDL_Surface* tmp){
 
 int* convert_to_adj(int** test)
 {
-  int* inter = malloc(sizeof(int)*16*16);
+  int* inter = malloc(sizeof(int)*(16*16+1));
   for(size_t i = 0; i < 16; i++)
   {
     for(size_t j = 0; j < 16; j++)
@@ -400,6 +400,11 @@ int* convert_to_adj(int** test)
 				inter[i*16 + j] = 1;
     }
   }
+	for(size_t k = 256 ; k > 0 ; k--)
+	{
+		inter[k+1] = inter[k];
+	}
+	inter[0] = 1;
   return inter;
 }
 
