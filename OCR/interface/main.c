@@ -2,7 +2,6 @@
 #include <SDL/SDL_image.h>
 #include <stdlib.h>
 #include <err.h>
-#include "pixel_operations.h"
 
 
 struct list{
