@@ -54,7 +54,7 @@ void black_white()
 {
   //SDL_Surface *img = load_image((char*)(sText));
   //display_black_n_white(img);
-  char func[500] = "./main ";
+  char func[500] = "./../segmentation/main ";
   strcat(func, sText);
   char numb[500] = " 4";
   strcat(func, numb);
