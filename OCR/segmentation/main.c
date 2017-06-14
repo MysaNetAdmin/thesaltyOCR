@@ -344,8 +344,8 @@ int** resize(SDL_Surface* tmp){
 
   Uint8 A,B,C,grey;
 
-  int x_ratio = ((int)(width - 1))/16;
-  int y_ratio = ((int)(height-1))/16;
+  int x_ratio = 16/width;
+  int y_ratio = 16/height;
   int x_diff,y_diff;
   size_t offset = 0;
   for(size_t i = 0;i < 16;i++){
@@ -360,7 +360,7 @@ int** resize(SDL_Surface* tmp){
       B = getpixel(tmp,x,y + 1) & 0xff;
       C = getpixel(tmp,x,y + width) & 0xff;
 
-      if(A + B + C < 255) grey = 0;
+      if((A + B + C ) / 3 < 255) grey = 0;
       else  grey = 255;
 
       Uint32 pix = SDL_MapRGB(tmp->format,grey,grey,grey);
