@@ -332,7 +332,7 @@ int** fill(SDL_Surface* tmp){
   return res;
 }
 
-SDL_Surface* resize(SDL_Surface* tmp){
+int** resize(SDL_Surface* tmp){
   
   SDL_Surface* res = init_SDL(16,16);
   size_t height = tmp->h;
@@ -365,7 +365,22 @@ SDL_Surface* resize(SDL_Surface* tmp){
       putpixel(res,offset++,y,pix);
     }
   }
-  return res;
+
+  int** resf;
+  resf = malloc(sizeof *resf * 16);
+  for(size_t k = 0; k < 16;k++){
+    resf[k] = malloc(sizeof(**resf * 16));
+  }
+  for(size_t i = 0; i < height;i++){
+    for(size_t j = 0; j < width;j++){
+      Uint32 pix = getpixel(tmp,j,i);
+      Uint8 r,g,b;
+      SDL_GetRGB(pix,tmp->format,&r,&g,&b);
+      if(r < 127) resf[i][j] = 1;
+      else  resf[i][j] = 0;
+    }
+  }
+  return resf;
 }
 
 //return a double-dimension array fill with 0 and 1 (0 == white pixel and 1 == black pixel) 
@@ -378,25 +393,9 @@ int** matrix (SDL_Surface* img){
   int** res;
 
   if(width > 16 || height > 16){
-
-    res = malloc(sizeof *res * 16);
-    for(size_t k = 0; k < 16; k++){
-      res[k] = malloc(sizeof(**res * 16));
-    }
-
-    img = resize(img);
-    for(size_t i = 0; i < height;i++){
-      for(size_t j = 0; j < width;j++){
-        Uint32 pix = getpixel(img,j,i);
-        Uint8 r,g,b;
-        SDL_GetRGB(pix,img->format,&r,&g,&b);
-        if(r < 127) res[i][j] = 1;
-        else  res[i][j] = 0;
-      }
-    }
-    return res;
+    printf("non");
+    res = resize(img);
   }
-  
   else  {
     res = fill(img);
   }
@@ -459,7 +458,6 @@ void display_mat(SDL_Surface *img)
 	struct queue* queue = vertical(horizon(black_n_white(img),0));
   while(!(queue_is_empty(queue)))
   {
-		printf("oui\n");
     SDL_Surface* img2 = queue_pop(queue);
     print_matrix(matrix(img2));
     printf("\n");
