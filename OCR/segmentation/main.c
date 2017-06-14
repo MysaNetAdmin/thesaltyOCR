@@ -313,18 +313,20 @@ SDL_Surface* text(SDL_Surface *img){
 
 int** fill(SDL_Surface* tmp){
 
-  int** res = malloc(sizeof(int) * 16);
+  int** res = malloc(sizeof *res * 16);
   for(size_t k = 0;k < 16;k++){
-    res[k] = malloc(sizeof(int) * 16);
+    res[k] = malloc(sizeof **res * 16);
   }
   size_t width = tmp->w;
   size_t height = tmp->h;
 
   for(size_t i = 0;i < height;i++){
     for(size_t j = 0;j < width;j++){
+
         Uint32 pix = getpixel(tmp,j,i);
         Uint8 r,g,b;
         SDL_GetRGB(pix,tmp->format,&r,&g,&b);
+
         if(r < 122) res[i][j] =  1;
         else  res[i][j] = 0;
       }
@@ -392,11 +394,12 @@ int** matrix (SDL_Surface* img){
   
   int** res;
 
-  if(width > 16 || height > 16){
+  if(width > 16 && height > 16){
     printf("non");
     res = resize(img);
   }
   else  {
+    printf("oui");
     res = fill(img);
   }
   return res; 
