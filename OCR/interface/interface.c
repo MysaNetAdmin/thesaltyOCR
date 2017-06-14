@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <gtk/gtk.h>
-#include "pixel_operations.h"
+#include "pixel_operations.c"
 #include "main.c"
 
 GtkBuilder    *builder;
