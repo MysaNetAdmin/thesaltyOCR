@@ -2,14 +2,15 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <gtk/gtk.h>
-#include "../segmentation/pixel_operations.c"
-#include "../segmentation/main.c"
+//#include "../segmentation/pixel_operations.c"
+//#include "../segmentation/main.c"
 
 GtkBuilder    *builder;
 GtkWidget     *main_window;
 GtkWidget     *image;
 GtkWidget     *open, *bin, *xor, *pWindow;
 const gchar *sText;
+char img_name[500] = "";
 
 static void chooser_dialog()
 {
@@ -47,6 +48,7 @@ void on_copier_button(GtkWidget *pButton, gpointer data)
  
     gtk_label_set_text(GTK_LABEL(pTempLabel), sText);
     gtk_image_set_from_file(GTK_IMAGE(image), sText);
+    img_name[500] = (char)(sText);
  
     g_list_free(pList);
     gtk_widget_hide(pWindow);
@@ -54,8 +56,8 @@ void on_copier_button(GtkWidget *pButton, gpointer data)
 
 void black_white()
 {
-  SDL_Surface *img = load_image((char*)(sText));
-  display_black_n_white(img);
+  //SDL_Surface *img = load_image((char*)(sText));
+  //display_black_n_white(img);
 }
 
 int main(int argc, char *argv[])

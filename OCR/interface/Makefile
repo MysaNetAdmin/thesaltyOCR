@@ -7,17 +7,24 @@ CFLAGS= -Wall -Wextra -std=c99
 LDFLAGS=
 LDLIBS= `pkg-config --libs sdl gtk+-3.0` -lSDL_image
  
-SRC= ../segmentation/pixel_operations.c ../segmentation/main.c interface.c
-OBJ= ${SRC:.c=.o}
-DEP= ${SRC:.c=.d}
+SRC_SEGMENTATION= ../segmentation/pixel_operations.c ../segmentation/main.c
+OBJ_SEGMENTATION= ${SRC_SEGMENTATION:.c=.o}
+
+SRC_INTERFACE= interface.c
+OBJ_INTERFACE= ${SRC_INTERFACE:.c=.o}
  
-all: interface
+all: segmentation interface
+
+segmentation: ${OBJ_SEGMENTATION}
+
+interface: ${OBJ_INTERFACE}
  
 debug: CFLAGS+= -O0 -g
-debug: interface
+debug: segmentation interface
  
 clean:
-	rm -f ${OBJ} ${DEP}
-	rm -f interface
+	${RM} segmentation interface
+	${RM} ${OBJ_SEGMENTATION}
+	${RM} ${OBJ_INTERFACE}
  
 # END
