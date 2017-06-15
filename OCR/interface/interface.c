@@ -122,15 +122,6 @@ int main(int argc, char *argv[])
   pLabel = GTK_WIDGET(gtk_builder_get_object(builder, "pLabel"));
 
 
-  bin = GTK_WIDGET(gtk_builder_get_object(builder, "bin"));
-  xor = GTK_WIDGET(gtk_builder_get_object(builder, "xor"));
-  pWindow = GTK_WIDGET(gtk_builder_get_object(builder, "pWindow"));
-  pVBox = GTK_WIDGET(gtk_builder_get_object(builder, "pVBox"));
-  pEntry = GTK_WIDGET(gtk_builder_get_object(builder, "pEntry"));
-  pButton= GTK_WIDGET(gtk_builder_get_object(builder, "pButton"));
-  pLabel = GTK_WIDGET(gtk_builder_get_object(builder, "pLabel"));
-
-
   gtk_window_set_resizable(GTK_WINDOW(main_window), TRUE);
 
   gtk_builder_connect_signals(builder, NULL);
@@ -149,12 +140,6 @@ int main(int argc, char *argv[])
   g_signal_connect_swapped(matrice, "clicked", G_CALLBACK(matrice), NULL);
 
   g_signal_connect_swapped(line, "clicked", G_CALLBACK(line), NULL);
-
-  g_signal_connect(G_OBJECT(pEntry), "activate", G_CALLBACK(on_activate_entry), (GtkWidget*) pLabel);
-
-  g_signal_connect(G_OBJECT(pButton), "clicked", G_CALLBACK(on_copier_button), (GtkWidget*) pVBox);
-
-  g_signal_connect_swapped(bin, "clicked", G_CALLBACK(black_white), NULL);
 
   g_signal_connect(G_OBJECT(pEntry), "activate", G_CALLBACK(on_activate_entry), (GtkWidget*) pLabel);
 
