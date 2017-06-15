@@ -3,7 +3,9 @@
 #include <stdlib.h>
 #include <err.h>
 #include "pixel_operations.h"
-
+#include "../Network/train.h"
+#include "../Network/NeuralNetwork/neuronet.h"
+#include <sys/types.h>
 
 struct list{
   struct list *next;
@@ -375,9 +377,9 @@ int** resize(SDL_Surface* tmp){
   return resf;
 }
 
-int* convert_to_adj(int** test)
+double* convert_to_adj(int** test)
 {
-  int* inter = malloc(sizeof(int)*(16*16+1));
+  double* inter = malloc(sizeof(double)*(16*16+1));
   for(size_t i = 0; i < 16; i++)
   {
     for(size_t j = 0; j < 16; j++)
@@ -396,7 +398,7 @@ int* convert_to_adj(int** test)
   return inter;
 }
 
-int* matrix (SDL_Surface* img)
+double* matrix (SDL_Surface* img)
 {
   size_t width = img->w;
   size_t height = img->h;
@@ -412,7 +414,7 @@ int* matrix (SDL_Surface* img)
   return convert_to_adj(res);
 }
 
-int clean_matrix(int* mat)
+int clean_matrix(double* mat)
 {
   int null = 1;
   for(size_t i = 0; i < 16; i++)
@@ -427,13 +429,13 @@ int clean_matrix(int* mat)
   return null;
 }
 
-void print_matrix(int* matrix){
+void print_matrix(double* matrix){
   if(!clean_matrix(matrix))
   {
     for(int i = 0;i < 16;i++){
       for(int j = 0;j < 16;j++){
-        if (matrix[i*16 + j] == 1) printf("%c[1;31m%d ",27,matrix[i*16 + j]);
-        else printf("%c[1;32m%d ", 27,matrix[i*16 + j]); 
+        if (matrix[i*16 + j] == 1) printf("%c[1;31m%f ",27,matrix[i*16 + j]);
+        else printf("%c[1;32m%f ", 27,matrix[i*16 + j]); 
         //printf("%d ",matrix[i][j]);
       }
       printf("\n");
@@ -500,7 +502,7 @@ void display_mat(SDL_Surface *img)
 	struct queue* queue = SDL_to_mat(img);
   while(!(queue_is_empty(queue)))
   {
-		int* tmp = queue_pop(queue);
+		double* tmp = queue_pop(queue);
     print_matrix(tmp);
     printf("\n");
   }
@@ -525,6 +527,10 @@ int main(int argc,char *argv[]){
     char *path = argv[1];
     unsigned int f = strtoul(argv[2], NULL, 20);
     SDL_Surface* ver = load_image(path);
+    struct queue* queue = malloc(sizeof(struct queue));
+    queue_init(queue);
+    double* inter = malloc(sizeof(double));
+    char* res = malloc(sizeof(char)*4000);
     //display_image(ver);
     //size_t width = ver->w;
     //size_t height = ver->h;
@@ -541,6 +547,17 @@ int main(int argc,char *argv[]){
       case 3:
         display_mat(ver);
         break;
+      case 4:
+      {
+        size_t cpt = 0;
+        while(!queue_is_empty(queue) && cpt < 4000){
+          inter = queue_pop(queue);
+          res[cpt] = launchfun(inter);
+          cpt++;
+        }
+        printf("%s",res);
+        break;
+      }
     }
   }
   return 0;
