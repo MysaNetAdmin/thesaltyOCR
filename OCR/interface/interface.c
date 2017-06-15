@@ -6,7 +6,7 @@
 GtkBuilder    *builder;
 GtkWidget     *main_window;
 GtkWidget     *image;
-GtkWidget     *open, *open2, *black_white, *columnn, *matrix, *linee, *xor, *pWindow;
+GtkWidget     *open, *open2, *blackwhite, *columnn, *matrix, *linee, *xor, *pWindow;
 const gchar *sText = "OCRLogo.png";
 
 static void chooser_dialog()
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
   image = GTK_WIDGET(gtk_builder_get_object(builder, "image"));
   open = GTK_WIDGET(gtk_builder_get_object(builder, "open"));
   open2 = GTK_WIDGET(gtk_builder_get_object(builder, "open2"));
-  black_white = GTK_WIDGET(gtk_builder_get_object(builder, "black_white"));
+  blackwhite = GTK_WIDGET(gtk_builder_get_object(builder, "black_white"));
   columnn = GTK_WIDGET(gtk_builder_get_object(builder, "column"));
   linee = GTK_WIDGET(gtk_builder_get_object(builder, "line"));
   matrix = GTK_WIDGET(gtk_builder_get_object(builder, "matrice"));
