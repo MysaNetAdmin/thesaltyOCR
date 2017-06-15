@@ -2,7 +2,7 @@
 #include <SDL/SDL_image.h>
 #include <stdlib.h>
 #include <err.h>
-#include "pixel_operations.h"
+#include "pixel_operations.c"
 #include <sys/types.h>
 #include <stdio.h>
 
