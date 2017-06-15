@@ -6,11 +6,7 @@
 GtkBuilder    *builder;
 GtkWidget     *main_window;
 GtkWidget     *image;
-<<<<<<< HEAD
 GtkWidget     *open, *open2, *black_white, *column, *matrice, *line, *xor, *pWindow;
-=======
-GtkWidget     *open, *open2, *bin, *xor, *pWindow;
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
 const gchar *sText = "OCRLogo.png";
 
 static void chooser_dialog()
@@ -20,7 +16,6 @@ static void chooser_dialog()
 }
 
 void on_activate_entry(GtkWidget *pEntry, gpointer data)
-<<<<<<< HEAD
 {
     sText = gtk_entry_get_text(GTK_ENTRY(pEntry));
 
@@ -73,53 +68,6 @@ void column()
   (void)system(func);
 }
 
-void matrice()
-=======
-{ 
-    sText = gtk_entry_get_text(GTK_ENTRY(pEntry));
-
-    gtk_label_set_text(GTK_LABEL((GtkWidget*)data), sText);
-    gtk_image_set_from_file(GTK_IMAGE(image), sText);
-}
-
-void on_copier_button(GtkWidget *pButton, gpointer data)
-{
-    GtkWidget *pTempEntry;
-    GtkWidget *pTempLabel;
-    GList *pList;
-    
-    gtk_button_set_label(GTK_BUTTON(pButton), "Ouvrir l'image");
- 
-    pList = gtk_container_get_children(GTK_CONTAINER((GtkWidget*)data));
- 
-    pTempEntry = GTK_WIDGET(pList->data);
- 
-    pList = g_list_next(pList);
- 
-    pList = g_list_next(pList);
-
-    pTempLabel = GTK_WIDGET(pList->data);
- 
-    sText = gtk_entry_get_text(GTK_ENTRY(pTempEntry));
- 
-    gtk_label_set_text(GTK_LABEL(pTempLabel), sText);
-    gtk_image_set_from_file(GTK_IMAGE(image), sText);
-    gtk_window_set_position(GTK_WINDOW(main_window), GTK_WIN_POS_CENTER);
-    g_list_free(pList);
-    gtk_widget_hide(pWindow);
-}
-
-void black_white()
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
-{
-  char func[500] = "./../segmentation/main ";
-  strcat(func, sText);
-  char numb[500] = " 3";
-  strcat(func, numb);
-  (void)system(func);
-<<<<<<< HEAD
-}
-
 void line()
 {
   char func[500] = "./../segmentation/main ";
@@ -129,27 +77,24 @@ void line()
   (void)system(func);
 }
 
-void reseau()
+void matrice()
 {
-  char func[500] = "./../xor/xor ";
-  strcat(func, sText);
-  (void)system(func);
-=======
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
+    char func[500] = "./../segmentation/main ";
+    strcat(func, sText);
+    char numb[500] = " 3";
+    strcat(func, numb);
+    (void)system(func);
 }
 
 void reseau()
 {
-<<<<<<< HEAD
-=======
   char func[500] = "./../xor/xor ";
   strcat(func, sText);
   (void)system(func);
 }
 
 int main(int argc, char *argv[])
-{ 
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
+{
   GtkWidget *pVBox;
   GtkWidget *pEntry;
   GtkWidget *pButton;
@@ -164,7 +109,7 @@ int main(int argc, char *argv[])
   image = GTK_WIDGET(gtk_builder_get_object(builder, "image"));
   open = GTK_WIDGET(gtk_builder_get_object(builder, "open"));
   open2 = GTK_WIDGET(gtk_builder_get_object(builder, "open2"));
-<<<<<<< HEAD
+
   black_white = GTK_WIDGET(gtk_builder_get_object(builder, "black_white"));
   column = GTK_WIDGET(gtk_builder_get_object(builder, "column"));
   matrice = GTK_WIDGET(gtk_builder_get_object(builder, "matrice"));
@@ -176,16 +121,16 @@ int main(int argc, char *argv[])
   pButton= GTK_WIDGET(gtk_builder_get_object(builder, "pButton"));
   pLabel = GTK_WIDGET(gtk_builder_get_object(builder, "pLabel"));
 
-=======
+
   bin = GTK_WIDGET(gtk_builder_get_object(builder, "bin"));
   xor = GTK_WIDGET(gtk_builder_get_object(builder, "xor"));
   pWindow = GTK_WIDGET(gtk_builder_get_object(builder, "pWindow"));
   pVBox = GTK_WIDGET(gtk_builder_get_object(builder, "pVBox"));
-  pEntry = GTK_WIDGET(gtk_builder_get_object(builder, "pEntry")); 
+  pEntry = GTK_WIDGET(gtk_builder_get_object(builder, "pEntry"));
   pButton= GTK_WIDGET(gtk_builder_get_object(builder, "pButton"));
   pLabel = GTK_WIDGET(gtk_builder_get_object(builder, "pLabel"));
-  
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
+
+
   gtk_window_set_resizable(GTK_WINDOW(main_window), TRUE);
 
   gtk_builder_connect_signals(builder, NULL);
@@ -196,7 +141,7 @@ int main(int argc, char *argv[])
 
   g_signal_connect_swapped(xor, "clicked", G_CALLBACK(reseau), NULL);
 
-<<<<<<< HEAD
+
   g_signal_connect_swapped(black_white, "clicked", G_CALLBACK(black_white), NULL);
 
   g_signal_connect_swapped(column, "clicked", G_CALLBACK(column), NULL);
@@ -209,14 +154,12 @@ int main(int argc, char *argv[])
 
   g_signal_connect(G_OBJECT(pButton), "clicked", G_CALLBACK(on_copier_button), (GtkWidget*) pVBox);
 
-=======
   g_signal_connect_swapped(bin, "clicked", G_CALLBACK(black_white), NULL);
 
   g_signal_connect(G_OBJECT(pEntry), "activate", G_CALLBACK(on_activate_entry), (GtkWidget*) pLabel);
- 
+
   g_signal_connect(G_OBJECT(pButton), "clicked", G_CALLBACK(on_copier_button), (GtkWidget*) pVBox);
- 
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
+
   g_object_unref(builder);
 
   gtk_widget_show(main_window);
