@@ -302,8 +302,8 @@ double *getoutput(char *symbole)
 
 void parcour(char* Dir, size_t iteration)
 {
-    //size_t layers[3] = {257, 1000, 53};
-   // struct net *net = makeNet(3, layers);
+   // size_t layers[3] = {401, 1000, 53};
+    //struct net *net = makeNet(3, layers);
     struct net *net = loadNet("OCR.bin");
 
     DIR *samples = opendir(Dir);
@@ -412,11 +412,10 @@ char OCR(struct net *net, double *inputs)
 
 int main()
 {
-  //parcour("training",100);
+// parcour("training",10);
   struct net *net = loadNet("OCR.bin");
-  char *train = "training/a/2.gif";
-  parcour(train, 100);
-  printf("%d",OCR(net,convertfromexemples(train))); 
-  //return(OCR(net, mat));
+  char *train = "training/J/0.gif";
+ // parcour(train, 100);
+  printf("%c\n",OCR(net, convertfromexemples(train)));
   return 0;
 }

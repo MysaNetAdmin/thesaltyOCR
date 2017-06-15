@@ -10,6 +10,4 @@ char *conc(char *str1, char *str2, char *sep);
 
 void parcour(char *Dir, size_t iteration);
 
-char launchfun(double* mat);
-
 #endif //TRAIN_NET_

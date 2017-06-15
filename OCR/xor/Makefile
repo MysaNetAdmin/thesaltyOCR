@@ -1,26 +1,23 @@
 # Simple Makefile
-
+ 
 # Compilers vars
 CC=gcc
 CPPFLAGS= -MMD
-CFLAGS= -Wall -Wextra -pedantic -std=c99 -O2
+CFLAGS= -Wall -Wextra -Werror -std=c99 -O -lm -o 
 LDFLAGS=
-LDLIBS= -lm
-
-SRC= neuronet.c test.c
+LDLIBS=
+ 
+SRC= xor.c
 DEP= ${SRC:.c=.d}
 PRG= ${SRC:.c=}
-
-all: test
-
-test: neuronet.o test.o
-
+ 
+all: ${PRG}
+ 
 -include ${DEP}
-
+ 
 clean:
 	rm -f *.o
 	rm -f ${DEP}
 	rm -f ${PRG}
-
+ 
 # END Makefile
-

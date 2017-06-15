@@ -46,7 +46,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="blackwhite">
+              <object class="GtkButton" id="black_white">
                 <property name="label" translatable="yes">Black &amp; White</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -59,8 +59,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="columns">
-                <property name="label" translatable="yes">Display Column</property>
+              <object class="GtkButton" id="column">
+                <property name="label" translatable="yes">Display Columns</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -72,7 +72,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="lines">
+              <object class="GtkButton" id="line">
                 <property name="label" translatable="yes">Display Lines</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -85,8 +85,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="matrices">
-                <property name="label" translatable="yes">Display the Matrix</property>
+              <object class="GtkButton" id="matrice">
+                <property name="label" translatable="yes">Display Matrix</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -111,7 +111,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="quit">
+              <object class="GtkButton">
                 <property name="label" translatable="yes">Quit</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>

@@ -6,7 +6,7 @@
 GtkBuilder    *builder;
 GtkWidget     *main_window;
 GtkWidget     *image;
-GtkWidget     *open, *open2, *blackwhite, *columns, *lines, *matrices, *xor, *pWindow;
+GtkWidget     *open, *open2, *blackwhite, *columnn, *matrix, *linee, *xor, *pWindow;
 const gchar *sText = "OCRLogo.png";
 
 static void chooser_dialog()
@@ -109,10 +109,10 @@ int main(int argc, char *argv[])
   image = GTK_WIDGET(gtk_builder_get_object(builder, "image"));
   open = GTK_WIDGET(gtk_builder_get_object(builder, "open"));
   open2 = GTK_WIDGET(gtk_builder_get_object(builder, "open2"));
-  blackwhite = GTK_WIDGET(gtk_builder_get_object(builder, "blackwhite"));
-  columns = GTK_WIDGET(gtk_builder_get_object(builder, "columns"));
-  lines = GTK_WIDGET(gtk_builder_get_object(builder, "lines"));
-  matrices = GTK_WIDGET(gtk_builder_get_object(builder, "matrices"));
+  blackwhite = GTK_WIDGET(gtk_builder_get_object(builder, "black_white"));
+  columnn = GTK_WIDGET(gtk_builder_get_object(builder, "column"));
+  linee = GTK_WIDGET(gtk_builder_get_object(builder, "line"));
+  matrix = GTK_WIDGET(gtk_builder_get_object(builder, "matrice"));
   xor = GTK_WIDGET(gtk_builder_get_object(builder, "xor"));
   pWindow = GTK_WIDGET(gtk_builder_get_object(builder, "pWindow"));
   pVBox = GTK_WIDGET(gtk_builder_get_object(builder, "pVBox"));
@@ -130,13 +130,13 @@ int main(int argc, char *argv[])
 
   g_signal_connect_swapped(xor, "clicked", G_CALLBACK(reseau), NULL);
 
-  g_signal_connect_swapped(blackwhite, "clicked", G_CALLBACK(black_white), NULL);
+  g_signal_connect_swapped(black_white, "clicked", G_CALLBACK(black_white), NULL);
 
-  g_signal_connect_swapped(lines, "clicked", G_CALLBACK(line), NULL);
+  g_signal_connect_swapped(columnn, "clicked", G_CALLBACK(column), NULL);
 
-  g_signal_connect_swapped(columns, "clicked", G_CALLBACK(column), NULL);
+  g_signal_connect_swapped(linee, "clicked", G_CALLBACK(line), NULL);
 
-  g_signal_connect_swapped(matrices, "clicked", G_CALLBACK(matrice), NULL);
+  g_signal_connect_swapped(matrix, "clicked", G_CALLBACK(matrice), NULL);
 
   g_signal_connect(G_OBJECT(pEntry), "activate", G_CALLBACK(on_activate_entry), (GtkWidget*) pLabel);
 
