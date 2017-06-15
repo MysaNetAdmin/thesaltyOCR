@@ -2,7 +2,7 @@
 #include <SDL/SDL_image.h>
 #include <stdlib.h>
 #include <err.h>
-#include "pixel_operations.c"
+#include "pixel_operations.h"
 #include <sys/types.h>
 #include <stdio.h>
 
@@ -529,8 +529,8 @@ int main(int argc,char *argv[]){
     SDL_Surface* ver = load_image(path);
     struct queue* queue = malloc(sizeof(struct queue));
     queue_init(queue);
-    double* inter = malloc(sizeof(double));
-    char* res = malloc(sizeof(char)*4000);
+    //double* inter = malloc(sizeof(double));
+    //char* res = malloc(sizeof(char)*4000);
     //display_image(ver);
     //size_t width = ver->w;
     //size_t height = ver->h;
