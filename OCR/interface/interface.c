@@ -130,7 +130,13 @@ int main(int argc, char *argv[])
 
   g_signal_connect_swapped(xor, "clicked", G_CALLBACK(reseau), NULL);
 
-  g_signal_connect_swapped(bin, "clicked", G_CALLBACK(black_white), NULL);
+  g_signal_connect_swapped(black_white, "clicked", G_CALLBACK(black_white), NULL);
+
+  g_signal_connect_swapped(columnn, "clicked", G_CALLBACK(column), NULL);
+
+  g_signal_connect_swapped(linee, "clicked", G_CALLBACK(line), NULL);
+
+  g_signal_connect_swapped(matrix, "clicked", G_CALLBACK(matrice), NULL);
 
   g_signal_connect(G_OBJECT(pEntry), "activate", G_CALLBACK(on_activate_entry), (GtkWidget*) pLabel);
 
