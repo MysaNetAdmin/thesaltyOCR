@@ -2,7 +2,7 @@
 #include <SDL/SDL_image.h>
 #include <stdlib.h>
 #include <err.h>
-#include "pixel_operations.h"
+#include "pixel_operations.c"
 #include "../Network/train.h"
 #include "../Network/NeuralNetwork/neuronet.h"
 #include <sys/types.h>
@@ -549,7 +549,7 @@ int main(int argc,char *argv[]){
       case 3:
         display_mat(ver);
         break;
-      case 4:
+      /*case 4:
       {
         size_t cpt = 0;
         while(!queue_is_empty(queue) && cpt < 4000){
@@ -559,8 +559,8 @@ int main(int argc,char *argv[]){
         }
         printf("%s",res);
         break;
-      }
-			case 5:
+      }*/
+			case 4:
 			{
 				queue = SDL_to_mat(ver);
 				while(!(queue_is_empty(queue)))
