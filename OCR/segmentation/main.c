@@ -152,7 +152,7 @@ void trait_line(SDL_Surface *img)
     }
     if(boo && cpt == 0){
       backline = i;
-      boo = 0; 
+      boo = 0;
       for(size_t k = 0 ;k < width;k++){
         Uint32 pix = SDL_MapRGB(img->format,0,0,0);
         putpixel(img,k,frontline - 1,pix);
@@ -192,7 +192,7 @@ struct queue* trait_column(struct queue* queue){
       }
       if(boo && cpt == 0){
         backline = i;
-        boo = 0; 
+        boo = 0;
         for(size_t k = 0 ;k < height;k++){
           Uint32 pix = SDL_MapRGB(img->format,0,0,0);
           putpixel(img,frontline,k,pix);
@@ -313,12 +313,6 @@ SDL_Surface* text(SDL_Surface *img){
 }
 
 
-<<<<<<< HEAD
-
-//fill each SDL element with white pixel until the size reach 16x16
-
-int** fill(SDL_Surface* tmp){
-=======
 
 //fill each SDL element with white pixel until the size reach 16x16
 
@@ -326,17 +320,11 @@ int** fill(SDL_Surface* tmp){
 
   size_t width = tmp->w;
   size_t height = tmp->h;
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
 
   int** res = malloc(sizeof *res * 16);
   for(size_t k = 0;k < 16;k++){
     res[k] = malloc(sizeof **res * 16);
   }
-<<<<<<< HEAD
-  size_t width = tmp->w;
-  size_t height = tmp->h;
-=======
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
 
   for(size_t i = 0;i < height;i++){
     for(size_t j = 0;j < width;j++){
@@ -354,45 +342,6 @@ int** fill(SDL_Surface* tmp){
 
 int** resize(SDL_Surface* tmp){
 
-<<<<<<< HEAD
-  SDL_Surface* res = init_SDL(16,16);
-  size_t height = tmp->h;
-  size_t width = tmp->w;
-
-  size_t x,y;
-
-  Uint8 A,B,C,grey;
-
-  int x_ratio = 16/width;
-  int y_ratio = 16/height;
-  int x_diff,y_diff;
-  size_t offset = 0;
-  for(size_t i = 0;i < 16;i++){
-    for(size_t j = 0; j < 16;j++){
-      x = (size_t)(x_ratio * j);
-      y = (size_t)(y_ratio * i);
-      x_diff = (x_ratio * j) - x;
-      y_diff = (y_ratio * i) - y;
-
-
-      A = getpixel(tmp,x,y) & 0xff;
-      B = getpixel(tmp,x,y + 1) & 0xff;
-      C = getpixel(tmp,x,y + width) & 0xff;
-
-      if((A + B + C ) / 3 < 255) grey = 0;
-      else  grey = 255;
-
-      Uint32 pix = SDL_MapRGB(tmp->format,grey,grey,grey);
-      putpixel(res,offset++,y,pix);
-    }
-  }
-
-  int** resf;
-  resf = malloc(sizeof *resf * 16);
-  for(size_t k = 0; k < 16;k++){
-    resf[k] = malloc(sizeof(**resf * 16));
-  }
-=======
   size_t width = tmp->w;
   size_t height = tmp->h;
 
@@ -402,18 +351,13 @@ int** resize(SDL_Surface* tmp){
   for(size_t k = 0; k < height;k++){
     res[k] = malloc(sizeof(int) * width);
   }
-  
-  //SDL_to_matrice 
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
+
+  //SDL_to_matrice
   for(size_t i = 0; i < height;i++){
     for(size_t j = 0; j < width;j++){
       Uint32 pix = getpixel(tmp,j,i);
       Uint8 r,g,b;
       SDL_GetRGB(pix,tmp->format,&r,&g,&b);
-<<<<<<< HEAD
-      if(r < 127) resf[i][j] = 1;
-      else  resf[i][j] = 0;
-=======
       if(r < 127) res[i][j] = 1;
       else  res[i][j] = 0;
     }
@@ -428,8 +372,7 @@ int** resize(SDL_Surface* tmp){
   //resize the first matrice
   for(size_t i = 0; i < 16;i++){
     for(size_t j = 0; j < 16;j++){
-      resf[i][j] = (int) (res[(i*tmp->h)/16][(j*tmp->w)/16]);   
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
+      resf[i][j] = (int) (res[(i*tmp->h)/16][(j*tmp->w)/16]);
     }
   }
   return resf;
@@ -454,7 +397,6 @@ int* convert_to_adj(int** test)
 	}
 	inter[0] = 1;
   return inter;
-<<<<<<< HEAD
 }
 
 int* matrix (SDL_Surface* img)
@@ -482,7 +424,7 @@ int clean_matrix(int* mat)
     {
       if(mat[i*16 + j] == 1 && i != 0 && j != 0)
         null = 0;
-   	}
+    }
   }
 
   return null;
@@ -494,7 +436,7 @@ void print_matrix(int* matrix){
     for(int i = 0;i < 16;i++){
       for(int j = 0;j < 16;j++){
         if (matrix[i*16 + j] == 1) printf("%c[1;31m%d ",27,matrix[i*16 + j]);
-        else printf("%c[1;32m%d ", 27,matrix[i*16 + j]); 
+        else printf("%c[1;32m%d ", 27,matrix[i*16 + j]);
         //printf("%d ",matrix[i][j]);
       }
       printf("\n");
@@ -556,109 +498,6 @@ struct queue* SDL_to_mat(SDL_Surface *img)
 	return res;
 }
 
-=======
-}
-
-int* matrix (SDL_Surface* img)
-{
-  size_t width = img->w;
-  size_t height = img->h;
-
-  int** res;
-
-  if(width > 16 && height > 16){
-    res = resize(img);
-  }
-  else{
-    res = fill(img);
-  }
-  return convert_to_adj(res);
-}
-
-int clean_matrix(int* mat)
-{
-  int null = 1;
-  for(size_t i = 0; i < 16; i++)
-  {
-    for(size_t j = 0; j < 16; j++)
-    {
-      if(mat[i*16 + j] == 1 && i != 0 && j != 0)
-        null = 0;
-    }
-  }
-
-  return null;
-}
-
-void print_matrix(int* matrix){
-  if(!clean_matrix(matrix))
-  {
-    for(int i = 0;i < 16;i++){
-      for(int j = 0;j < 16;j++){
-        if (matrix[i*16 + j] == 1) printf("%c[1;31m%d ",27,matrix[i*16 + j]);
-        else printf("%c[1;32m%d ", 27,matrix[i*16 + j]); 
-        //printf("%d ",matrix[i][j]);
-      }
-      printf("\n");
-    }
-  }
-}
-
-SDL_Surface* black_n_white(SDL_Surface* img){
-  size_t width = img->w;
-  size_t height = img->h;
-  for(size_t i = 0; i < width; ++i){
-    for(size_t j = 0; j < height; ++j){
-
-      Uint32 pix = getpixel(img,i,j);
-      Uint8 r,g,b;
-      SDL_GetRGB(pix,img->format, &r, &g, &b);
-      r = 0.3 * r + 0.59 * g + 0.11 * b;
-      if (r <= 123) r = 0;
-      else r = 255;
-      g = r;
-      b = r;
-      pix = SDL_MapRGB(img -> format,r,g,b);
-      putpixel(img,i,j,pix);
-    }
-  }
-  return img;
-}
-
-/* FONCTIONS A UTILISER */
-
-void display_black_n_white(SDL_Surface *img)
-{
-  SDL_Surface* ver = black_n_white(img);
-  display_image(ver);
-}
-
-void display_line(SDL_Surface *img)
-{
-  trait_line(black_n_white(img));
-}
-
-void display_column(SDL_Surface *img)
-{
-  struct queue* queue = trait_column(horizon(black_n_white(img),0));
-  free(queue);
-}
-
-struct queue* SDL_to_mat(SDL_Surface *img)
-{
-	struct queue* res = malloc(sizeof(struct queue));
-	queue_init(res);
-	struct queue* queue = vertical(horizon(black_n_white(img),0));
-  while(!(queue_is_empty(queue)))
-  {
-    SDL_Surface* img2 = queue_pop(queue);
-    queue_push(res,matrix(img2));
-	}
-	free(queue);
-	return res;
-}
-
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
 void display_mat(SDL_Surface *img)
 {
 	struct queue* queue = SDL_to_mat(img);
@@ -686,11 +525,6 @@ int main(int argc,char *argv[]){
   else if(argc <= 2)
     errx(1, "%s", usage);
   else{
-<<<<<<< HEAD
-    char *path = argv[1];
-    unsigned int f = strtoul(argv[2], NULL, 20);
-    SDL_Surface* ver = load_image(path);
-=======
 		FILE* file = fopen("mat","wr");
     char *path = argv[1];
     unsigned int f = strtoul(argv[2], NULL, 20);
@@ -699,7 +533,6 @@ int main(int argc,char *argv[]){
     queue_init(queue);
     double* inter = malloc(sizeof(double));
     char* res = malloc(sizeof(char)*4000);
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
     //display_image(ver);
     //size_t width = ver->w;
     //size_t height = ver->h;
@@ -716,8 +549,6 @@ int main(int argc,char *argv[]){
       case 3:
         display_mat(ver);
         break;
-<<<<<<< HEAD
-=======
       /*case 4:
       {
         size_t cpt = 0;
@@ -740,7 +571,6 @@ int main(int argc,char *argv[]){
 				}
 			}
 			fclose(file);
->>>>>>> 572e5332d14b68906cacef32160826cfcf3e4616
     }
   }
   return 0;
