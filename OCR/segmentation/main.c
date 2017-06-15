@@ -6,6 +6,7 @@
 #include "../Network/train.h"
 #include "../Network/NeuralNetwork/neuronet.h"
 #include <sys/types.h>
+#include <stdio.h>
 
 struct list{
   struct list *next;
@@ -377,9 +378,9 @@ int** resize(SDL_Surface* tmp){
   return resf;
 }
 
-double* convert_to_adj(int** test)
+int* convert_to_adj(int** test)
 {
-  double* inter = malloc(sizeof(double)*(16*16+1));
+  int* inter = malloc(sizeof(int)*(16*16+1));
   for(size_t i = 0; i < 16; i++)
   {
     for(size_t j = 0; j < 16; j++)
@@ -398,7 +399,7 @@ double* convert_to_adj(int** test)
   return inter;
 }
 
-double* matrix (SDL_Surface* img)
+int* matrix (SDL_Surface* img)
 {
   size_t width = img->w;
   size_t height = img->h;
@@ -414,14 +415,14 @@ double* matrix (SDL_Surface* img)
   return convert_to_adj(res);
 }
 
-int clean_matrix(double* mat)
+int clean_matrix(int* mat)
 {
   int null = 1;
   for(size_t i = 0; i < 16; i++)
   {
-    for(size_t j = (i) ? 1 : 0; j < (i) ? 17 : 0; j++)
+    for(size_t j = 0; j < 16; j++)
     {
-      if(mat[i*16 + j] == 1)
+      if(mat[i*16 + j] == 1 && i != 0 && j != 0)
         null = 0;
     }
   }
@@ -429,13 +430,13 @@ int clean_matrix(double* mat)
   return null;
 }
 
-void print_matrix(double* matrix){
+void print_matrix(int* matrix){
   if(!clean_matrix(matrix))
   {
     for(int i = 0;i < 16;i++){
       for(int j = 0;j < 16;j++){
-        if (matrix[i*16 + j] == 1) printf("%c[1;31m%f ",27,matrix[i*16 + j]);
-        else printf("%c[1;32m%f ", 27,matrix[i*16 + j]); 
+        if (matrix[i*16 + j] == 1) printf("%c[1;31m%d ",27,matrix[i*16 + j]);
+        else printf("%c[1;32m%d ", 27,matrix[i*16 + j]); 
         //printf("%d ",matrix[i][j]);
       }
       printf("\n");
@@ -502,7 +503,7 @@ void display_mat(SDL_Surface *img)
 	struct queue* queue = SDL_to_mat(img);
   while(!(queue_is_empty(queue)))
   {
-		double* tmp = queue_pop(queue);
+		int* tmp = queue_pop(queue);
     print_matrix(tmp);
     printf("\n");
   }
@@ -524,6 +525,7 @@ int main(int argc,char *argv[]){
   else if(argc <= 2)
     errx(1, "%s", usage);
   else{
+		FILE* file = fopen("mat","wr");
     char *path = argv[1];
     unsigned int f = strtoul(argv[2], NULL, 20);
     SDL_Surface* ver = load_image(path);
@@ -558,6 +560,17 @@ int main(int argc,char *argv[]){
         printf("%s",res);
         break;
       }
+			case 5:
+			{
+				queue = SDL_to_mat(ver);
+				while(!(queue_is_empty(queue)))
+				{
+					int* tmp = queue_pop(queue);
+					for(size_t i = 0; i < 256; i++)
+						fprintf(file,"%d",tmp[i]);
+				}
+			}
+			fclose(file);
     }
   }
   return 0;
