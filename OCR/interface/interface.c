@@ -86,12 +86,6 @@ void matrice()
     (void)system(func);
 }
 
-void reseau()
-{
-  char func[500] = "./../xor/xor ";
-  strcat(func, sText);
-  (void)system(func);
-}
 
 int main(int argc, char *argv[])
 {
@@ -109,18 +103,16 @@ int main(int argc, char *argv[])
   image = GTK_WIDGET(gtk_builder_get_object(builder, "image"));
   open = GTK_WIDGET(gtk_builder_get_object(builder, "open"));
   open2 = GTK_WIDGET(gtk_builder_get_object(builder, "open2"));
-
   black_white = GTK_WIDGET(gtk_builder_get_object(builder, "black_white"));
   column = GTK_WIDGET(gtk_builder_get_object(builder, "column"));
-  matrice = GTK_WIDGET(gtk_builder_get_object(builder, "matrice"));
   line = GTK_WIDGET(gtk_builder_get_object(builder, "line"));
+  matrice = GTK_WIDGET(gtk_builder_get_object(builder, "matrice"));
   xor = GTK_WIDGET(gtk_builder_get_object(builder, "xor"));
   pWindow = GTK_WIDGET(gtk_builder_get_object(builder, "pWindow"));
   pVBox = GTK_WIDGET(gtk_builder_get_object(builder, "pVBox"));
   pEntry = GTK_WIDGET(gtk_builder_get_object(builder, "pEntry"));
   pButton= GTK_WIDGET(gtk_builder_get_object(builder, "pButton"));
   pLabel = GTK_WIDGET(gtk_builder_get_object(builder, "pLabel"));
-
 
   gtk_window_set_resizable(GTK_WINDOW(main_window), TRUE);
 
@@ -132,14 +124,7 @@ int main(int argc, char *argv[])
 
   g_signal_connect_swapped(xor, "clicked", G_CALLBACK(reseau), NULL);
 
-
-  g_signal_connect_swapped(black_white, "clicked", G_CALLBACK(black_white), NULL);
-
-  g_signal_connect_swapped(column, "clicked", G_CALLBACK(column), NULL);
-
-  g_signal_connect_swapped(matrice, "clicked", G_CALLBACK(matrice), NULL);
-
-  g_signal_connect_swapped(line, "clicked", G_CALLBACK(line), NULL);
+  g_signal_connect_swapped(bin, "clicked", G_CALLBACK(black_white), NULL);
 
   g_signal_connect(G_OBJECT(pEntry), "activate", G_CALLBACK(on_activate_entry), (GtkWidget*) pLabel);
 
