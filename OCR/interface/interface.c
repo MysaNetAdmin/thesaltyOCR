@@ -52,13 +52,16 @@ void on_copier_button(GtkWidget *pButton, gpointer data)
 
 void black_white()
 {
-  //SDL_Surface *img = load_image((char*)(sText));
-  //display_black_n_white(img);
   char func[500] = "./../segmentation/main ";
   strcat(func, sText);
   char numb[500] = " 4";
   strcat(func, numb);
   (void)system(func);
+}
+
+void reseau()
+{
+
 }
 
 int main(int argc, char *argv[])
@@ -84,12 +87,16 @@ int main(int argc, char *argv[])
   pEntry = GTK_WIDGET(gtk_builder_get_object(builder, "pEntry")); 
   pButton= GTK_WIDGET(gtk_builder_get_object(builder, "pButton"));
   pLabel = GTK_WIDGET(gtk_builder_get_object(builder, "pLabel"));
+  
+  gtk_window_set_resizable(GTK_WINDOW(main_window), TRUE);
 
   gtk_builder_connect_signals(builder, NULL);
 
   g_signal_connect_swapped(open, "clicked", G_CALLBACK(chooser_dialog), NULL);
 
   g_signal_connect_swapped(open2, "button-press-event", G_CALLBACK(chooser_dialog), NULL);
+
+  g_signal_connect_swapped(xor, "clicked", G_CALLBACK(reseau), NULL);
 
   g_signal_connect_swapped(bin, "clicked", G_CALLBACK(black_white), NULL);
 
