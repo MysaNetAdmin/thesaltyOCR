@@ -54,7 +54,7 @@ void black_white()
 {
   char func[500] = "./../segmentation/main ";
   strcat(func, sText);
-  char numb[500] = " 4";
+  char numb[500] = " 3";
   strcat(func, numb);
   (void)system(func);
 }
