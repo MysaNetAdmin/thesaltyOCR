@@ -24,39 +24,39 @@ char getres(size_t i)
 {
   switch(i)
   {
-  case 1:
+  case 40:
     return 'a';
-  case 2:
+  case 31:
     return 'b';
-  case 3:
+  case 21:
     return 'c';
-  case 4:
+  case 12:
     return 'd';
-  case 5:
+  case 42:
     return 'e';
-  case 6:
+  case 43:
     return 'f';
-  case 7:
+  case 4:
     return 'g';
   case 8:
     return 'h';
   case 9:
     return 'i';
-  case 10:
+  case 17:
     return 'j';
-  case 11:
+  case 22:
     return 'k';
-  case 12:
+  case 7:
     return 'l';
-  case 13:
+  case 11:
     return 'm';
-  case 14:
+  case 1:
     return 'n';
-  case 15:
+  case 39:
     return 'o';
   case 16:
     return 'p';
-  case 17:
+  case 10:
     return 'q';
   case 18:
     return 'r';
@@ -64,9 +64,9 @@ char getres(size_t i)
     return 's';
   case 20:
     return 't';
-  case 21:
+  case 3:
     return 'u';
-  case 22:
+  case 13:
     return 'v';
   case 23:
     return 'w';
@@ -74,17 +74,17 @@ char getres(size_t i)
     return 'x';
   case 25:
     return 'y';
-  case 26:
+  case 28:
     return 'z';
   case 27:
     return 'A';
-  case 28:
+  case 26:
     return 'B';
   case 29:
     return 'C';
   case 30:
     return 'D';
-  case 31:
+  case 2:
     return 'E';
   case 32:
     return 'F';
@@ -100,15 +100,15 @@ char getres(size_t i)
     return 'K';
   case 38:
     return 'L';
-  case 39:
+  case 15:
     return 'M';
-  case 40:
+  case 14:
     return 'N';
   case 41:
     return 'O';
-  case 42:
+  case 5:
     return 'P';
-  case 43:
+  case 6:
     return 'Q';
   case 44:
     return 'R';
@@ -410,12 +410,12 @@ char OCR(struct net *net, double *inputs)
   return getres(r);
 }
 
-int main()
+int main(int argv, char* argc[])
 {
-// parcour("training",10);
+// parcour("training",50);
   struct net *net = loadNet("OCR.bin");
-  char *train = "training/J/0.gif";
+  //char *train = "training/z/0.gif";
  // parcour(train, 100);
-  printf("%c\n",OCR(net, convertfromexemples(train)));
+  printf("%c\n",OCR(net, convertfromexemples(argc[1])));
   return 0;
 }
