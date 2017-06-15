@@ -59,7 +59,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="columnn">
+              <object class="GtkButton" id="columns">
                 <property name="label" translatable="yes">Display Column</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -85,7 +85,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="matrix">
+              <object class="GtkButton" id="matrices">
                 <property name="label" translatable="yes">Display the Matrix</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
