@@ -2,7 +2,7 @@
 #include <SDL/SDL_image.h>
 #include <stdlib.h>
 #include <err.h>
-#include "pixel_operations.c"
+#include "pixel_operations.h"
 
 
 struct list{
@@ -315,12 +315,13 @@ SDL_Surface* text(SDL_Surface *img){
 
 int** fill(SDL_Surface* tmp){
 
+  size_t width = tmp->w;
+  size_t height = tmp->h;
+
   int** res = malloc(sizeof *res * 16);
   for(size_t k = 0;k < 16;k++){
     res[k] = malloc(sizeof **res * 16);
   }
-  size_t width = tmp->w;
-  size_t height = tmp->h;
 
   for(size_t i = 0;i < height;i++){
     for(size_t j = 0;j < width;j++){
@@ -338,50 +339,37 @@ int** fill(SDL_Surface* tmp){
 
 int** resize(SDL_Surface* tmp){
 
-  SDL_Surface* res = init_SDL(16,16);
-  size_t height = tmp->h;
   size_t width = tmp->w;
+  size_t height = tmp->h;
 
-  size_t x,y;
-
-  Uint8 A,B,C,grey;
-
-  int x_ratio = 16/width;
-  int y_ratio = 16/height;
-  int x_diff,y_diff;
-  size_t offset = 0;
-  for(size_t i = 0;i < 16;i++){
-    for(size_t j = 0; j < 16;j++){
-      x = (size_t)(x_ratio * j);
-      y = (size_t)(y_ratio * i);
-      x_diff = (x_ratio * j) - x;
-      y_diff = (y_ratio * i) - y;
-
-
-      A = getpixel(tmp,x,y) & 0xff;
-      B = getpixel(tmp,x,y + 1) & 0xff;
-      C = getpixel(tmp,x,y + width) & 0xff;
-
-      if((A + B + C ) / 3 < 255) grey = 0;
-      else  grey = 255;
-
-      Uint32 pix = SDL_MapRGB(tmp->format,grey,grey,grey);
-      putpixel(res,offset++,y,pix);
-    }
+  //take a new heightxwidth matrice
+  int** res;
+  res = malloc(sizeof(int) * height);
+  for(size_t k = 0; k < height;k++){
+    res[k] = malloc(sizeof(int) * width);
   }
-
-  int** resf;
-  resf = malloc(sizeof *resf * 16);
-  for(size_t k = 0; k < 16;k++){
-    resf[k] = malloc(sizeof(**resf * 16));
-  }
+  
+  //SDL_to_matrice 
   for(size_t i = 0; i < height;i++){
     for(size_t j = 0; j < width;j++){
       Uint32 pix = getpixel(tmp,j,i);
       Uint8 r,g,b;
       SDL_GetRGB(pix,tmp->format,&r,&g,&b);
-      if(r < 127) resf[i][j] = 1;
-      else  resf[i][j] = 0;
+      if(r < 127) res[i][j] = 1;
+      else  res[i][j] = 0;
+    }
+  }
+
+  //take a new 16x16 matrice
+  int** resf = malloc(16*sizeof(int));
+  for(size_t k = 0; k < 16;k++){
+    resf[k] = malloc(16 * sizeof(int));
+  }
+
+  //resize the first matrice
+  for(size_t i = 0; i < 16;i++){
+    for(size_t j = 0; j < 16;j++){
+      resf[i][j] = (int) (res[(i*tmp->h)/16][(j*tmp->w)/16]);   
     }
   }
   return resf;
