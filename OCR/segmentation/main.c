@@ -429,7 +429,7 @@ int clean_matrix(int* mat)
   int null = 1;
   for(size_t i = 0; i < 16; i++)
   {
-    for(size_t j = 0; j < 16; j++)
+    for(size_t j = (i) ? 1 : 0; j < (i) ? 17 : 0; j++)
     {
       if(mat[i*16 + j] == 1)
         null = 0;
