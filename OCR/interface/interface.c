@@ -61,7 +61,9 @@ void black_white()
 
 void reseau()
 {
-
+  char func[500] = "./../xor/xor ";
+  strcat(func, sText);
+  (void)system(func);
 }
 
 int main(int argc, char *argv[])
