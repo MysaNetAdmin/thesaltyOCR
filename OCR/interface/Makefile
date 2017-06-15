@@ -5,21 +5,26 @@ CC=gcc
 CPPFLAGS= `pkg-config --cflags sdl gtk+-3.0`
 CFLAGS= -Wall -Wextra -std=c99
 LDFLAGS=
-LDLIBS= `pkg-config --libs sdl gtk+-3.0`
+LDLIBS= `pkg-config --libs sdl gtk+-3.0` -lSDL_image
  
-SRC= interface.c
-OBJ= ${SRC:.c=.o}
-DEP= ${SRC:.c=.d}
+SRC_MAIN= ../segmentation/pixel_operations.c ../segmentation/main.c
+OBJ_MAIN= ${SRC_MAIN:.c=.o}
+
+SRC_INTERFACE= interface.c
+OBJ_INTERFACE= ${SRC_INTERFACE:.c=.o}
  
-all: interface
- 
-main: ${OBJ}
+all: ../segmentation/main interface
+
+main: ${OBJ_MAIN}
+
+interface: ${OBJ_INTERFACE}
  
 debug: CFLAGS+= -O0 -g
-debug: interface
+debug: main interface
  
 clean:
-	rm -f ${OBJ} ${DEP}
-	rm -f interface
+	${RM} ../segmentation/main interface
+	${RM} ${OBJ_MAIN}
+	${RM} ${OBJ_INTERFACE}
  
 # END
