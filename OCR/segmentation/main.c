@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <err.h>
 #include "pixel_operations.c"
-#include "../Network/train.h"
-#include "../Network/NeuralNetwork/neuronet.h"
 #include <sys/types.h>
 #include <stdio.h>
 
