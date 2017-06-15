@@ -2,7 +2,7 @@
 #include <SDL/SDL_image.h>
 #include <stdlib.h>
 #include <err.h>
-#include "pixel_operations.c"
+#include "pixel_operations.h"
 
 
 struct list{
@@ -429,11 +429,11 @@ int clean_matrix(int* mat)
   int null = 1;
   for(size_t i = 0; i < 16; i++)
   {
-    for(size_t j = (i) ? 1 : 0; j < (i) ? 17 : 0; j++)
+    for(size_t j = 0; j < 16; j++)
     {
-      if(mat[i*16 + j] == 1)
+      if(mat[i*16 + j] == 1 && i != 0 && j != 0)
         null = 0;
-    }
+   	}
   }
 
   return null;
